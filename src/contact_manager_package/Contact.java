@@ -3,6 +3,7 @@ package contact_manager_package;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Calendar;
+import java.util.Iterator;
 
 public class Contact {
 
@@ -10,7 +11,7 @@ public class Contact {
 	private String surname;
 	private Date birthday;
 	private String email;
-	private ArrayList <Interest> interests = new ArrayList <Interest>();
+	private ArrayList <Interest> interests;
 	
 	public Contact() {};
 
@@ -52,27 +53,42 @@ public class Contact {
 	public void setSurname(String surname) {this.surname = name;}
 	public void setBirthdate(Date birthdate) {this.birthday = birthdate;}
 	public void setEmail(String email) {this.email = email;}
+	public void setInterest(ArrayList<Interest> interests){this.interests = interests;}
 	
-	public void addInterest(String interest){
 	
+	public boolean addInterest(String interest){
+
+		Iterator <Interest> it = interests.iterator();
+
+		while(it.hasNext()){
+
+			if((it.next() + "") == interest){
+
+				return false;
+			}
+		}
+
 		Interest aux;
 		aux = Interest.valueOf(interest);
 		interests.add(aux);
+		
+		return true;
 	}
 
-	public void removeInterest(String interest){
+	public boolean removeInterest(String interest){
+		
+		Iterator <Interest> it = interests.iterator();
 
-		String aux;
+		while(it.hasNext()){
 
-		for(int i = 0; i < interests.size(); i++){
+			if((it.next() + "") == interest){
 
-			aux = "" + i;
-
-			if(aux == interest){
-
-				interests.remove(i);
+				interests.remove(it.next());
+				return true;
 			}
 		}
+		
+		return false;
 	}
 
 	public String toString(){

@@ -16,10 +16,10 @@ public class Manager {
     
     private Manager(){
 
-        contacts = new ArrayList <Contact>();
+        this.contacts = new ArrayList <Contact>();
     }
 
-    private static Manager getInstance(String email){
+    public static Manager getInstance(){
 
         if(instance == null){
             
@@ -36,7 +36,7 @@ public class Manager {
 
     public boolean AddContact(String name, String surname, Date birthday, String email){
 
-        if(SearchContactBy(email)){
+        if(!SearchContactBy(email)){
 
             AddContact(new Contact(name, surname, birthday, email));
             
@@ -141,7 +141,7 @@ public class Manager {
             System.out.println("Type the email of the contact: ");
             aux_interest = in.next();
 
-            if(SearchContactBy(aux3, aux_fullname)){
+            if(SearchContactBy(aux3, aux_interest)){
 
                 System.out.println("Showing the result of the search: ");
                 
@@ -171,6 +171,8 @@ public class Manager {
         else{
             /*sdsds*/
         }
+
+        in.close();
     }
 
 
@@ -244,6 +246,7 @@ public class Manager {
     }
 
     public void LoadFile() throws ParseException{
+        
 
         try{
             BufferedReader br = new BufferedReader(new FileReader(new File("contact.txt")));
