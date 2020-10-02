@@ -3,7 +3,6 @@ package contact_manager_package;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Calendar;
-import java.util.Iterator;
 
 public class Contact {
 
@@ -11,7 +10,7 @@ public class Contact {
 	private String surname;
 	private Date birthday;
 	private String email;
-	private ArrayList <Interest> interests;
+	private ArrayList <Interest> interests = new ArrayList <Interest>();
 	
 	public Contact() {};
 
@@ -58,14 +57,9 @@ public class Contact {
 	
 	public boolean addInterest(String interest){
 
-		Iterator <Interest> it = interests.iterator();
+		if(interests.contains(Interest.valueOf(interest))){
 
-		while(it.hasNext()){
-
-			if((it.next() + "") == interest){
-
-				return false;
-			}
+			return false;
 		}
 
 		Interest aux;
@@ -77,19 +71,16 @@ public class Contact {
 
 	public boolean removeInterest(String interest){
 		
-		Iterator <Interest> it = interests.iterator();
+		if(interests.contains(Interest.valueOf(interest))){
 
-		while(it.hasNext()){
-
-			if((it.next() + "") == interest){
-
-				interests.remove(it.next());
-				return true;
-			}
+			interests.remove(Interest.valueOf(interest));
+			return true;
 		}
 		
 		return false;
 	}
+
+	@Override
 
 	public String toString(){
 	

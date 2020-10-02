@@ -13,6 +13,7 @@ public class Manager {
     private static Manager instance = null;
 
     private ArrayList <Contact> contacts;
+    private Scanner in = new Scanner (System.in);
     
     private Manager(){
 
@@ -36,32 +37,36 @@ public class Manager {
 
     public boolean AddContact(String name, String surname, Date birthday, String email){
 
-        if(!SearchContactBy(email)){
+        if(!checkExistence(email)){
 
             AddContact(new Contact(name, surname, birthday, email));
-            
+
+            System.out.println("Contacto añadido con éxito.");
             return true;
         }
 
+        System.out.println("No se ha podido añadir el contacto por que el email ya existe en la Base de Datos");
         return false;
     }
 
-    public boolean RemoveContact (Contact contact){
-
-        return RemoveContact(contact.getEmail());
-    }
-
     public boolean RemoveContact (String email){
-        
-       for(int i = 0; i < contacts.size(); i++){
-           
-            if(contacts.get(i).getEmail().equals(email)){
-               
-               contacts.remove(i);
-               return true;
+
+        if(checkExistence(email)){
+            
+            for(int i = 0; i < contacts.size(); i++){
+            
+                if(contacts.get(i).getEmail().equals(email)){
+                
+                    contacts.remove(i);
+                }
             }
-       }
-       return false;
+            
+            System.out.println("Contacto eliminado con éxito.");
+            return true;
+        }
+
+        System.out.println("No se ha podido eliminar el contacto por que el email no existe en la Base de Datos");
+        return false;       
     }
 
     public void UpdateContact (Contact new_contact, Contact old_contact){
@@ -71,12 +76,14 @@ public class Manager {
 
     }
 
-
-
     public void ConsultContact(){
 
-        Scanner in = new Scanner (System.in);
         int option;
+
+        Contact single = new Contact();
+        ArrayList <Contact> compound = new ArrayList <Contact>();
+        String search_term;
+        int search_term_int;
 
         System.out.println("=====================================");
         System.out.println("Contact's Consult");
@@ -91,16 +98,14 @@ public class Manager {
         option = in.nextInt();
 
         if(option == 1){
-            
-            Contact aux1 = new Contact();
-            String aux_email;
-            System.out.println("Type the email of the contact: ");
-            aux_email = in.next();
 
-            if(SearchContactBy(aux1, aux_email)){
+            System.out.println("Type the email of the contact to search: ");
+            search_term = in.next();
+
+            if((single = SearchContactByEmail(search_term)) != null){
 
                 System.out.println("Showing the result of the search: ");
-                System.out.println(aux1.toString());
+                System.out.println(single.toString());
             }
 
             else{
@@ -111,20 +116,19 @@ public class Manager {
 
         else if(option == 2){
             
-            ArrayList <Contact> aux2 = new ArrayList <Contact>();
-            String aux_fullname;
-            System.out.println("Type the email of the contact: ");
-            aux_fullname = in.next();
+            System.out.println("Type the full name of the contact to search: ");
 
-            if(SearchContactBy(aux2, aux_fullname)){
+            in = new Scanner (System.in);
+
+            search_term = in.nextLine();
+
+            if((compound = SearchContactByFullname(search_term)) != null){
 
                 System.out.println("Showing the result of the search: ");
                 
-                Iterator <Contact> it = aux2.iterator();
+                for(int i = 0; i < compound.size(); i++){
 
-                while(it.hasNext()){
-
-                    it.next().toString();
+                    System.out.println(compound.get(i).toString());
                 }
             }
 
@@ -136,20 +140,16 @@ public class Manager {
 
         else if(option == 3){
             
-            ArrayList <Contact> aux3 = new ArrayList <Contact>();
-            String aux_interest;
-            System.out.println("Type the email of the contact: ");
-            aux_interest = in.next();
+            System.out.println("Type the interest of the contact to search: ");
+            search_term = in.next();
 
-            if(SearchContactBy(aux3, aux_interest)){
+            if((compound = SearchContactByInterest(search_term)) != null){
 
                 System.out.println("Showing the result of the search: ");
                 
-                Iterator <Contact> it = aux3.iterator();
+                for(int i = 0; i < compound.size(); i++){
 
-                while(it.hasNext()){
-
-                    it.next().toString();
+                    System.out.println(compound.get(i).toString());
                 }
             }
 
@@ -160,83 +160,150 @@ public class Manager {
         }
 
         else if (option == 4){
-            /*string aux_name;
-            System.out.println("Type the full name of the contact: ");
-            aux_name = in.nextLine();
-            System.out.println("Showing results of the search: ")
-            System.out.println(SearchContactBy(aux_name).toString());*/
 
-        }
-
-        else{
-            /*sdsds*/
-        }
-
-        in.close();
-    }
+            System.out.println("Type the age of the contact to search: ");
+            search_term_int = in.nextInt();
 
 
+            if((compound = SearchContactByAge(search_term_int)) != null){
 
-    public boolean SearchContactBy(Contact contacto, String email){
-        
-        Iterator <Contact> it = contacts.iterator();
-        
-        while(it.hasNext()){
-
-            if(it.next().getEmail() == email){
+                System.out.println("Showing the result of the search: ");
                 
-                contacto = it.next();
-                
-                return true;
+                for(int i = 0; i < compound.size(); i++){
+
+                    System.out.println(compound.get(i).toString());
+                }
             }
-        }
 
-        return false;
-    }
+            else{
 
-    public boolean SearchContactBy(String email){
-        
-        Iterator <Contact> it = contacts.iterator();
-        
-        while(it.hasNext()){
-
-            if(it.next().getEmail() == email){
-                
-                return true;
-            }
-        }
-
-        return false;
-    }
-    
-    public boolean SearchContactBy(ArrayList <Contact> contactos, String fullname){
-        
-        Iterator <Contact> it = contacts.iterator();
-        Contact aux;
-
-        while(it.hasNext()){
-
-            if(it.next().getFullname() == fullname){
-                
-                aux = it.next();
-                contacts.add(aux);
-            }
-        }
-
-        if(contactos.size() != 0){
-
-            return true;
+                System.out.println("No results.");
+            }          
         }
 
         else{
             
-            return false;
+            System.out.println("Ha elegido una opción incorrecta. Pruebe de nuevo.");
+        }
+    }
+
+    public boolean checkExistence(String email){
+        
+        Iterator <Contact> it = contacts.iterator();
+        
+        while(it.hasNext()){
+
+            if(it.next().getEmail() == email){
+                
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public Contact SearchContactByEmail(String email){
+        
+        Contact single;
+
+        for(int i = 0; i < contacts.size(); i++){
+            
+            if(contacts.get(i).getEmail().equals(email)){
+            
+                single = contacts.get(i);
+                return single;
+            }
+        }
+
+        return null;
+    }
+    
+    public ArrayList <Contact> SearchContactByFullname(String fullname){
+
+        ArrayList <Contact> compound = new ArrayList <Contact>();
+        Contact single;
+
+        for(int i = 0; i < contacts.size(); i++){
+
+            if(contacts.get(i).getFullname().equals(fullname)){
+
+                single = contacts.get(i);
+                compound.add(single);
+            }
+        }
+
+        if(compound.size() != 0){
+
+            return compound;
+        }
+
+        else{
+
+            return null;
+        }
+    }
+
+    public ArrayList <Contact> SearchContactByInterest(String interest){
+        
+        ArrayList <Contact> aux = new ArrayList <Contact>();
+
+        for(int i = 0; i < contacts.size(); i++){
+
+            if(contacts.get(i).getInterests().contains(Interest.valueOf(interest))){
+
+                aux.add(contacts.get(i));
+            }
+        }
+
+        if(aux.size() != 0){
+
+            return aux;
+        }
+
+        else{
+
+            return null;
+        }
+    }
+
+    public ArrayList <Contact> SearchContactByAge(int age){
+
+        ArrayList <Contact> compound = new ArrayList <Contact>();
+        Contact single;
+
+        for(int i = 0; i < contacts.size(); i++){
+
+            if(contacts.get(i).getAge() == age){
+
+                single = contacts.get(i);
+                compound.add(single);
+            }
+        }
+
+        if(compound.size() != 0){
+
+            return compound;
+        }
+
+        else{
+
+            return null;
+        }
+    }
+
+    public void mostrarContactos(){
+
+        Iterator <Contact> it = contacts.iterator();
+        
+        while(it.hasNext()){
+
+            System.out.println(it.next().toString());
         }
     }
 
     public void SaveFile(String message){
 
-
+        
 
 
 
