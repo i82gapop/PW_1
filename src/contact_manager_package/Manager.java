@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 import java.text.*;
 import java.io.*;
 
@@ -30,6 +31,31 @@ public class Manager {
         return instance;
     }
 
+    public void Menu(){
+
+        int option;
+
+        System.out.println("=====================================");
+        System.out.println("Contact's Consult");
+        System.out.println("=====================================");
+        System.out.println("Options: ");
+        System.out.println("1. Add contact");
+        System.out.println("2. Eliminate contact");
+        System.out.println("3. Update contact");
+        System.out.println("4. Consult contacts");
+        System.out.println("0. Exit the menu");
+        System.out.println("=====================================");
+        System.out.println("Your option: ");
+        
+        option = in.nextInt();
+
+        while(option != 0){
+
+            
+        }
+
+    }
+
     public void AddContact (Contact contact){
 
         contacts.add(contact);
@@ -41,11 +67,9 @@ public class Manager {
 
             AddContact(new Contact(name, surname, birthday, email));
 
-            System.out.println("Contacto añadido con éxito.");
             return true;
         }
 
-        System.out.println("No se ha podido añadir el contacto por que el email ya existe en la Base de Datos");
         return false;
     }
 
@@ -58,14 +82,11 @@ public class Manager {
                 if(contacts.get(i).getEmail().equals(email)){
                 
                     contacts.remove(i);
+                    return true;
                 }
             }
-            
-            System.out.println("Contacto eliminado con éxito.");
-            return true;
         }
 
-        System.out.println("No se ha podido eliminar el contacto por que el email no existe en la Base de Datos");
         return false;       
     }
 
@@ -73,7 +94,6 @@ public class Manager {
 
         int ind = contacts.indexOf(old_contact);
         contacts.set(ind, new_contact);
-
     }
 
     public void ConsultContact(){
@@ -91,99 +111,105 @@ public class Manager {
         System.out.println("How do you wish to search for your contact?: ");
         System.out.println("1. By email");
         System.out.println("2. By name (name and surname)");
-        System.out.println("3. By interests)");
+        System.out.println("3. By interests");
         System.out.println("4. By age");
+        System.out.println("0. Exit the menu");
         System.out.println("=====================================");
         System.out.println("Your option: ");
         option = in.nextInt();
 
-        if(option == 1){
+        while(option != 0){
 
-            System.out.println("Type the email of the contact to search: ");
-            search_term = in.next();
+            if(option == 1){
 
-            if((single = SearchContactByEmail(search_term)) != null){
+                System.out.println("Type the email of the contact to search: ");
+                search_term = in.next();
 
-                System.out.println("Showing the result of the search: ");
-                System.out.println(single.toString());
-            }
+                if((single = SearchContactByEmail(search_term)) != null){
 
-            else{
+                    System.out.println("Showing the result of the search: ");
+                    System.out.println(single.toString());
+                }
 
-                System.out.println("No results.");
-            }
-        } 
+                else{
 
-        else if(option == 2){
-            
-            System.out.println("Type the full name of the contact to search: ");
+                    System.out.println("No results.");
+                }
+            } 
 
-            in = new Scanner (System.in);
-
-            search_term = in.nextLine();
-
-            if((compound = SearchContactByFullname(search_term)) != null){
-
-                System.out.println("Showing the result of the search: ");
+            else if(option == 2){
                 
-                for(int i = 0; i < compound.size(); i++){
+                System.out.println("Type the full name of the contact to search: ");
 
-                    System.out.println(compound.get(i).toString());
+                in = new Scanner (System.in);
+                //in.flush();
+
+                search_term = in.nextLine();
+
+                if((compound = SearchContactByFullname(search_term)) != null){
+
+                    System.out.println("Showing the results of the search: ");
+                    
+                    for(int i = 0; i < compound.size(); i++){
+
+                        System.out.println(compound.get(i).toString());
+                    }
+                }
+
+                else{
+
+                    System.out.println("No results.");
                 }
             }
 
-            else{
-
-                System.out.println("No results.");
-            }
-        }
-
-        else if(option == 3){
-            
-            System.out.println("Type the interest of the contact to search: ");
-            search_term = in.next();
-
-            if((compound = SearchContactByInterest(search_term)) != null){
-
-                System.out.println("Showing the result of the search: ");
+            else if(option == 3){
                 
-                for(int i = 0; i < compound.size(); i++){
+                System.out.println("Type the interest of the contact to search: ");
+                search_term = in.next();
 
-                    System.out.println(compound.get(i).toString());
+                if((compound = SearchContactByInterest(search_term)) != null){
+
+                    System.out.println("Showing the results of the search: ");
+                    
+                    for(int i = 0; i < compound.size(); i++){
+
+                        System.out.println(compound.get(i).toString());
+                    }
+                }
+
+                else{
+
+                    System.out.println("No results.");
                 }
             }
 
-            else{
+            else if (option == 4){
 
-                System.out.println("No results.");
-            }
-        }
-
-        else if (option == 4){
-
-            System.out.println("Type the age of the contact to search: ");
-            search_term_int = in.nextInt();
+                System.out.println("Type the age of the contact to search: ");
+                search_term_int = in.nextInt();
 
 
-            if((compound = SearchContactByAge(search_term_int)) != null){
+                if((compound = SearchContactByAge(search_term_int)) != null){
 
-                System.out.println("Showing the result of the search: ");
-                
-                for(int i = 0; i < compound.size(); i++){
+                    System.out.println("Showing the results of the search: ");
+                    
+                    for(int i = 0; i < compound.size(); i++){
 
-                    System.out.println(compound.get(i).toString());
+                        System.out.println(compound.get(i).toString());
+                    }
                 }
+
+                else{
+
+                    System.out.println("No results.");
+                }          
             }
 
             else{
-
-                System.out.println("No results.");
-            }          
-        }
-
-        else{
-            
-            System.out.println("Ha elegido una opción incorrecta. Pruebe de nuevo.");
+                
+                System.out.println("Wrong option. Try using a valid option (between 0-4)");
+                option = in.nextInt();
+            }
         }
     }
 
@@ -193,7 +219,7 @@ public class Manager {
         
         while(it.hasNext()){
 
-            if(it.next().getEmail() == email){
+            if(it.next().getEmail().equals(email)){
                 
                 return true;
             }
@@ -301,42 +327,50 @@ public class Manager {
         }
     }
 
-    public void SaveFile(String message){
+    public void SaveFile() throws IOException {
 
-        
+        BufferedWriter bw = new BufferedWriter(new FileWriter(new File("contact.txt")));
 
+        for (Contact contact : contacts) {
+            
+            bw.write(contact.toStringFile());
+            bw.write("\n");
+        }
 
-
-
-
-
+        bw.close();
     }
 
     public void LoadFile() throws ParseException{
         
 
         try{
+            
             BufferedReader br = new BufferedReader(new FileReader(new File("contact.txt")));
             String line;
-            String[] arrayline, aux_interest;
-            SimpleDateFormat aux_date = new SimpleDateFormat("dd/MM/yyyy");
+            String [] array = new String[5];
 
+            SimpleDateFormat aux_date = new SimpleDateFormat("dd-MM-yyyy");
+            StringTokenizer token;
+            
             while((line = br.readLine()) != null){
 
-                arrayline = line.split("|");
-                ArrayList<Interest> aux_array = new ArrayList<Interest>();
-                    
-                arrayline[4].substring(1, arrayline[4].length() - 1);
+                token = new StringTokenizer(line, "|");            
 
-                aux_interest = arrayline[4].split(", ");
+                for(int i = 0; token.hasMoreTokens(); i++){
 
-                for(int i = 0; i < arrayline[4].length(); i++){
-                    
-                    Interest inter = Interest.valueOf(aux_interest[i]);
-		            aux_array.add(inter);
+                    array[i] = token.nextToken();
                 }
-                            
-                Contact aux_contact = new Contact(arrayline[0],arrayline[1],aux_date.parse(arrayline[2]),arrayline[3],aux_array);
+
+                Contact aux_contact = new Contact(array[0], array[1], aux_date.parse(array[2]), array[3]);
+
+                String without_spaces = array[4].replace(" ", "");
+                String without_brackets = without_spaces.substring(1, without_spaces.length()-1);
+                StringTokenizer token_interest = new StringTokenizer(without_brackets, ",");
+
+                while(token_interest.hasMoreTokens()){
+
+                    aux_contact.addInterest(token_interest.nextToken());
+                }
 
                 contacts.add(aux_contact);
             }

@@ -2,6 +2,7 @@ package contact_manager_package;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class Contact {
@@ -35,7 +36,14 @@ public class Contact {
 	public String getName() {return name;}
 	public String getSurname() {return surname;}
 	public String getFullname() {return name + " " + surname;}
-	public Date getBirthdate() {return birthday;}
+	public Date getBirthday() {return birthday;}
+
+	public String getBirthdayString(){
+
+		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+		return format.format(birthday);
+	}
+
 	public String getEmail() {return email;}
 	public ArrayList <Interest> getInterests(){return interests;}
 
@@ -54,7 +62,6 @@ public class Contact {
 	public void setEmail(String email) {this.email = email;}
 	public void setInterest(ArrayList<Interest> interests){this.interests = interests;}
 	
-	
 	public boolean addInterest(String interest){
 
 		if(interests.contains(Interest.valueOf(interest))){
@@ -62,10 +69,13 @@ public class Contact {
 			return false;
 		}
 
-		Interest aux;
-		aux = Interest.valueOf(interest);
-		interests.add(aux);
+		if(!checkExistenceInterest(interest)){
+
+			System.out.println("ERROR. No existe ese interes en la base de datos");
+			return false;
+		}
 		
+		interests.add(Interest.valueOf(interest));
 		return true;
 	}
 
@@ -80,10 +90,28 @@ public class Contact {
 		return false;
 	}
 
+	public boolean checkExistenceInterest(String interest){
+    
+        for (Interest i : Interest.values()) {
+            
+            if(i.name().equals(interest)){
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 	@Override
 
 	public String toString(){
 	
 		return "Contact {Name: " + name + "; Surname: " + surname + "; Birthdate: " + birthday + "; Email: " + email + "; Interests: " + interests + "}";
+	}
+
+	public String toStringFile(){
+
+		return name + "|" + surname + "|" + getBirthdayString() + "|" + email + "|" + interests;
 	}
 }
