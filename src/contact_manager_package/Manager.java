@@ -51,6 +51,34 @@ public class Manager {
 
         while(option != 0){
 
+            switch(option){
+
+                case 1: 
+                    System.out.println("Type the name of the contact below");
+                    String buff = in.nextLine();
+                    //si ves esto que sepas que me he ido a ducharme
+                    System.out.println("Type the surname of the contact below");
+                    String buff_surname = in.nextLine();
+                    System.out.println("Type the Birthday of the contact below");
+                    String buff_ = in.nextLine();
+                    System.out.println("Type the email of the contact below");
+                    String buff = in.nextLine();
+                    System.out.println("Has ");
+                    String buff = in.nextLine();
+
+
+
+
+
+
+
+
+
+
+
+
+
+            }
             
         }
 

@@ -1,5 +1,6 @@
 package contact_manager_package;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.io.IOException;
@@ -13,9 +14,11 @@ public class Principal {
         
         system.LoadFile();
 
+        //system.Menu();
         
+        system.mostrarContactos();
 
-        
         system.SaveFile();
+
     }
 }

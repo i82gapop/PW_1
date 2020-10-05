@@ -58,20 +58,19 @@ public class Contact {
 
 	public void setName(String name) {this.name = name;}
 	public void setSurname(String surname) {this.surname = name;}
-	public void setBirthdate(Date birthdate) {this.birthday = birthdate;}
+	public void setBirthday(Date birthday) {this.birthday = birthday;}
 	public void setEmail(String email) {this.email = email;}
 	public void setInterest(ArrayList<Interest> interests){this.interests = interests;}
 	
 	public boolean addInterest(String interest){
 
-		if(interests.contains(Interest.valueOf(interest))){
+		if(!checkExistenceInterest(interest)){
 
 			return false;
 		}
 
-		if(!checkExistenceInterest(interest)){
+		if(interests.contains(Interest.valueOf(interest))){
 
-			System.out.println("ERROR. No existe ese interes en la base de datos");
 			return false;
 		}
 		
@@ -91,11 +90,11 @@ public class Contact {
 	}
 
 	public boolean checkExistenceInterest(String interest){
-    
-        for (Interest i : Interest.values()) {
-            
-            if(i.name().equals(interest)){
 
+        for (Interest i : Interest.values()) {
+			
+            if(i.name().equals(interest)){
+				
                 return true;
             }
         }
@@ -113,5 +112,9 @@ public class Contact {
 	public String toStringFile(){
 
 		return name + "|" + surname + "|" + getBirthdayString() + "|" + email + "|" + interests;
+	}
+
+	public void setInterests(ArrayList<Interest> interests) {
+		this.interests = interests;
 	}
 }
