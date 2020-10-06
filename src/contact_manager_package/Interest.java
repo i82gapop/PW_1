@@ -2,5 +2,14 @@ package contact_manager_package;
 
 public enum Interest {
     
-    INTERNACIONAL, NACIONAL, DEPORTES, ECONOMIA, SOCIEDAD, 
+    ECONOMY,
+    SPORTS,
+    READING,
+    POLITICS,
+    COOKING,
+    MUSIC,
+    GAMING,
+    DESIGN,
+    MARTIALARTS
+    
 }

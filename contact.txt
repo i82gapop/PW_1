@@ -1,2 +1,3 @@
-pedro pablo|garcia|03-06-2000|pedropgarciap@gmail.com|[ECONOMIA, NACIONAL, DEPORTES]
-javi|garcia|03-06-2000|jgar|[ECONOMIA]
+Pedro Pablo|Garcia Pozo|03-06-2000|pedrop@|[ECONOMY]
+hola|si|03-06-2000|si@|[ECONOMY]
+asdasd|asdasdadsasd|23-07-20020|asdasdasd@|[POLITICS, READING, COOKING]

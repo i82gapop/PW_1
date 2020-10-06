@@ -31,10 +31,14 @@ public class Manager {
         return instance;
     }
 
-    public void Menu(){
+    public void Menu() throws ParseException{
 
-        int option;
+        int option = 1;
+        String buff_name, buff_surname, buff_birth, buff_email;
+        Contact aux_contact;
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 
+        while(option != 0){
         System.out.println("=====================================");
         System.out.println("Contact's Consult");
         System.out.println("=====================================");
@@ -49,31 +53,99 @@ public class Manager {
         
         option = in.nextInt();
 
-        while(option != 0){
-
             switch(option){
 
+                case 0:
+
+                        System.out.println("Have a nice day, thank you for trusting on us");
+                    break;
+
                 case 1: 
-                    System.out.println("Type the name of the contact below");
-                    String buff = in.nextLine();
-                    //si ves esto que sepas que me he ido a ducharme
-                    System.out.println("Type the surname of the contact below");
-                    String buff_surname = in.nextLine();
-                    System.out.println("Type the Birthday of the contact below");
-                    String buff_ = in.nextLine();
-                    System.out.println("Type the email of the contact below");
-                    String buff = in.nextLine();
-                    System.out.println("Has ");
-                    String buff = in.nextLine();
+
+                        in = new Scanner (System.in);
+
+                        System.out.println("Type the name of the contact below:");
+                    buff_name = in.nextLine();
+
+                        System.out.println("Type the surname of the contact below:");
+                    buff_surname = in.nextLine();
+
+                        System.out.println("Type the Birthday of the contact below: (format: dd-MM-yyyy)");
+                    buff_birth = in.next();
+
+                        System.out.println("Type the email of the contact below:");
+                    buff_email = in.next();
+
+                    aux_contact = new Contact(buff_name, buff_surname, format.parse(buff_birth), buff_email);
+                   
+                    System.out.println("What interests does your contact have from the following: " + InterestMenu());
+
+                    in = new Scanner (System.in);
+
+                    String buff_interest = in.nextLine();
+                    String without_spaces = buff_interest.replace(" ", "");
+                    StringTokenizer token_interest = new StringTokenizer(without_spaces, ",");
+
+                    while(token_interest.hasMoreTokens()){
+
+                        aux_contact.addInterest(token_interest.nextToken().toUpperCase());
+                    }
+
+                    contacts.add(aux_contact);
+
+                    break;
+
+                case 2:
+
+                    in = new Scanner (System.in);
+                        System.out.println("Type the email of the contact to remove below: ");
+                    buff_email = in.next();
+                    RemoveContact(buff_email);
+
+                    break;
+
+                case 3:
+
+                    in = new Scanner (System.in);
+                        System.out.println("Type the email of the contact to update below: ");
+                    buff_email = in.next();
+
+                    in = new Scanner (System.in);
+
+                        System.out.println("Lets add the new information of the contact.");
+                        System.out.println("Type the new name of the contact below:");
+                    buff_name = in.nextLine();
+
+                        System.out.println("Type the new surname of the contact below:");
+                    buff_surname = in.nextLine();
+
+                        System.out.println("Type the new Birthday of the contact below: (format: dd-MM-yyyy)");
+                    buff_birth = in.next();
+
+                    aux_contact = new Contact(buff_name, buff_surname, format.parse(buff_birth), buff_email);
+
+                    System.out.println("What new interests does your contact have from the following: " + InterestMenu());
+
+                    in = new Scanner (System.in);
+
+                    String buff_interest_ = in.nextLine();
+                    String without_spaces_ = buff_interest_.replace(" ", "");
+                    StringTokenizer token_interest_ = new StringTokenizer(without_spaces_, ",");
+
+                    while(token_interest_.hasMoreTokens()){
+
+                        aux_contact.addInterest(token_interest_.nextToken().toUpperCase());
+                    }
+
+                    UpdateContact(aux_contact, SearchContactByEmail(buff_email));
+
+                    break;
 
 
+                case 4:
 
-
-
-
-
-
-
+                    ConsultContact();
+                    break;
 
 
 
@@ -83,6 +155,9 @@ public class Manager {
         }
 
     }
+
+
+
 
     public void AddContact (Contact contact){
 
@@ -108,14 +183,21 @@ public class Manager {
             for(int i = 0; i < contacts.size(); i++){
             
                 if(contacts.get(i).getEmail().equals(email)){
-                
+                    
+                    
                     contacts.remove(i);
+                    System.out.println("Contact removed succesfully");
                     return true;
                 }
             }
         }
 
-        return false;       
+
+            System.out.println("The contact doesn't exist.");
+            return false;   
+        
+
+            
     }
 
     public void UpdateContact (Contact new_contact, Contact old_contact){
@@ -146,7 +228,6 @@ public class Manager {
         System.out.println("Your option: ");
         option = in.nextInt();
 
-        while(option != 0){
 
             if(option == 1){
 
@@ -195,7 +276,7 @@ public class Manager {
                 System.out.println("Type the interest of the contact to search: ");
                 search_term = in.next();
 
-                if((compound = SearchContactByInterest(search_term)) != null){
+                if((compound = SearchContactByInterest(search_term.toUpperCase())) != null){
 
                     System.out.println("Showing the results of the search: ");
                     
@@ -238,7 +319,7 @@ public class Manager {
                 System.out.println("Wrong option. Try using a valid option (between 0-4)");
                 option = in.nextInt();
             }
-        }
+        
     }
 
     public boolean checkExistence(String email){
@@ -408,4 +489,17 @@ public class Manager {
             System.out.println("File not found.");
         }
     }
+
+
+
+    public ArrayList <String> InterestMenu(){
+
+        ArrayList <String> aux = new ArrayList <String>();
+
+            for (Interest i : Interest.values()) {
+                aux.add(i.name());
+            
+            }
+            return aux;
+        }
 }
