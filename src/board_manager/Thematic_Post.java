@@ -1,19 +1,22 @@
 package board_manager;
 
+import java.util.ArrayList;
+import contact_manager_package.Contact;
+
 public class Thematic_Post extends Post{
     
-    protected ArrayList <Contact> interests = new ArrayList <Contact>();
+    protected ArrayList <String> interests = new ArrayList <String>();
 
-    public Individualized_Post(){};
+    public Thematic_Post(){};
 
-    public Individualized_Post(int identifier, String title, String body, Contact owner, ArrayList <Contact> recipients){
+    public Thematic_Post(int identifier, String title, String body, Contact owner, ArrayList <String> interests){
 
         super(identifier, title, body, owner);
 
-        this.recipients = recipients;
+        this.interests = interests;
     }
 
-    public ArrayList <Contact> getRecipients() {return recipients;}
+    public ArrayList <String> getInterests() {return interests;}
 
-    public void setRecipients(ArrayList <Contact> recipients){this.recipients = recipients;}
+    public void setInterests(ArrayList <String> interests){this.interests = interests;}
 }

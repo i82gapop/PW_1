@@ -26,7 +26,8 @@ public class Contact {
 	private String surname;
 	private Date birthday;
 	private String email;
-	private ArrayList <Interest> interests = new ArrayList <Interest>();
+	//private ArrayList <Interest> interests = new ArrayList <Interest>();
+	ArrayList <String> interests = new ArrayList <String>();
 	
 	/**
 	 * Empty (default) constructor
@@ -62,7 +63,7 @@ public class Contact {
 	 * @param interests A list with the interests of a contact
 	 * */
 	
-	public Contact(String name, String surname, Date birthday, String email, ArrayList <Interest> interests) {
+	public Contact(String name, String surname, Date birthday, String email, ArrayList <String> interests) {
 		
 		this.name = name;
 		this.surname = surname;
@@ -132,7 +133,7 @@ public class Contact {
 	 * 
 	 * @return Interests of the contact
 	 * */
-	public ArrayList <Interest> getInterests(){return interests;}
+	public ArrayList <String> getInterests(){return interests;}
 
 
 	/**
@@ -191,47 +192,29 @@ public class Contact {
 	 * */
 
 
-	public void setInterest(ArrayList<Interest> interests){this.interests = interests;}
+	public void setInterest(ArrayList<String> interests){this.interests = interests;}
 	
 	public boolean addInterest(String interest){
 
-		if(!checkExistenceInterest(interest)){
-
-			return false;
-		}
-
-		if(interests.contains(Interest.valueOf(interest))){
+		if(interests.contains(interest)){
 
 			return false;
 		}
 		
-		interests.add(Interest.valueOf(interest));
+		interests.add(interest);
 		return true;
 	}
 
 	public boolean removeInterest(String interest){
 		
-		if(interests.contains(Interest.valueOf(interest))){
+		if(interests.contains(interest)){
 
-			interests.remove(Interest.valueOf(interest));
+			interests.remove(interest);
 			return true;
 		}
 		
 		return false;
 	}
-
-	public boolean checkExistenceInterest(String interest){
-
-        for (Interest i : Interest.values()) {
-			
-            if(i.name().equals(interest)){
-				
-                return true;
-            }
-        }
-
-        return false;
-    }
 
 	//@Override
 

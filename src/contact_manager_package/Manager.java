@@ -24,6 +24,7 @@ public class Manager {
     private static Manager instance = null;
 
     private ArrayList <Contact> contacts;
+    private ArrayList <String> interests;
     private Scanner in = new Scanner (System.in);
 
     // private constructor
@@ -31,6 +32,7 @@ public class Manager {
     private Manager(){
 
         this.contacts = new ArrayList <Contact>();
+        this.interests = new ArrayList <String>();
     }
 
 
@@ -106,17 +108,26 @@ public class Manager {
 
                             aux_contact = new Contact(buff_name, buff_surname, format.parse(buff_birth), buff_email);
                         
-                            System.out.println("What interests does your contact have from the following: " + InterestMenu());
+                            System.out.println("What interests does your contact have from the following: " + interests);
 
                             in = new Scanner (System.in);
 
                             String buff_interest = in.nextLine();
                             String without_spaces = buff_interest.replace(" ", "");
                             StringTokenizer token_interest = new StringTokenizer(without_spaces, ",");
+                            ArrayList <String> token_interests = new ArrayList <String>();
 
                             while(token_interest.hasMoreTokens()){
 
-                                aux_contact.addInterest(token_interest.nextToken().toUpperCase());
+                                token_interests.add(token_interest.nextToken().toUpperCase());
+                            }
+
+                            for(int i = 0; i < token_interests.size(); i++){
+
+                                if(interests.contains(token_interests.get(i))){
+                
+                                    aux_contact.addInterest(token_interests.get(i));
+                                }
                             }
 
                             AddContact(aux_contact);
@@ -162,17 +173,27 @@ public class Manager {
 
                     aux_contact = new Contact(buff_name, buff_surname, format.parse(buff_birth), buff_email);
 
-                    System.out.println("What new interests does your contact have from the following: " + InterestMenu());
+                    System.out.println("What new interests does your contact have from the following: " + interests);
 
                     in = new Scanner (System.in);
 
                     String buff_interest_ = in.nextLine();
                     String without_spaces_ = buff_interest_.replace(" ", "");
                     StringTokenizer token_interest_ = new StringTokenizer(without_spaces_, ",");
+                    ArrayList <String> token_interests_ = new ArrayList <String>();
+
 
                     while(token_interest_.hasMoreTokens()){
 
-                        aux_contact.addInterest(token_interest_.nextToken().toUpperCase());
+                        token_interests_.add(token_interest_.nextToken().toUpperCase());
+                    }
+
+                    for(int i = 0; i < token_interests_.size(); i++){
+
+                        if(interests.contains(token_interests_.get(i))){
+        
+                            aux_contact.addInterest(token_interests_.get(i));
+                        }
                     }
 
                     UpdateContact(aux_contact, SearchContactByEmail(buff_email));
@@ -483,7 +504,7 @@ public class Manager {
 
         for(int i = 0; i < contacts.size(); i++){
 
-            if(contacts.get(i).getInterests().contains(Interest.valueOf(interest))){
+            if(contacts.get(i).getInterests().contains(interest)){
 
                 aux.add(contacts.get(i));
             }
@@ -598,7 +619,22 @@ public class Manager {
             properties.load(file_);
 
             String path = properties.getProperty("Directory");
-            
+            StringTokenizer interests_token = new StringTokenizer(properties.getProperty("Interests"), ","); 
+            ArrayList <String> interests_tokens = new ArrayList <String>();
+
+            while(interests_token.hasMoreTokens()){
+
+                interests_tokens.add(interests_token.nextToken());
+            }
+
+            for(int i = 0; i < interests_tokens.size(); i++){//eliminates duplicates
+
+                if(!interests.contains(interests_tokens.get(i))){
+
+                    interests.add(interests_tokens.get(i));
+                }
+            }
+
             BufferedReader br = new BufferedReader(new FileReader(new File(path)));
             String line;
             String [] array = new String[5];
@@ -620,10 +656,19 @@ public class Manager {
                 String without_spaces = array[4].replace(" ", "");
                 String without_brackets = without_spaces.substring(1, without_spaces.length()-1);
                 StringTokenizer token_interest = new StringTokenizer(without_brackets, ",");
+                ArrayList <String> token_interests = new ArrayList <String>();
 
                 while(token_interest.hasMoreTokens()){
 
-                    aux_contact.addInterest(token_interest.nextToken());
+                    token_interests.add(token_interest.nextToken());
+                }
+
+                for(int i = 0; i < token_interests.size(); i++){//eliminates duplicates
+
+                    if(interests.contains(token_interests.get(i))){
+                
+                        aux_contact.addInterest(token_interests.get(i));
+                    }
                 }
 
                 contacts.add(aux_contact);
@@ -634,21 +679,4 @@ public class Manager {
             System.out.println("File not found.");
         }
     }
-
-
-/**
- * An interface that shows the list of existing interests
- *
- * */
-
-    public ArrayList <String> InterestMenu(){
-
-        ArrayList <String> aux = new ArrayList <String>();
-
-            for (Interest i : Interest.values()) {
-                aux.add(i.name());
-            
-            }
-            return aux;
-        }
 }
