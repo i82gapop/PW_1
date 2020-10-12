@@ -1,25 +1,40 @@
 package contact_manager_package;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.text.*;
 import java.io.*;
+import java.util.Properties;
+
+
+/**
+ * A program to manage contacts of different people in Java.
+ * @author Ruben Borrego Canovaca
+ * @author Pedro Pablo Garcia Pozo
+ * @since 26-09-2020
+ * @version 2.0
+ **/
 
 
 public class Manager {
 
+    // Singleton declaration
     private static Manager instance = null;
 
     private ArrayList <Contact> contacts;
     private Scanner in = new Scanner (System.in);
+
+    // private constructor
     
     private Manager(){
 
         this.contacts = new ArrayList <Contact>();
     }
+
+
+    // Access point to the instance
 
     public static Manager getInstance(){
 
@@ -31,6 +46,12 @@ public class Manager {
         return instance;
     }
 
+
+/**
+ * An interface of the menu of the sytem
+ * 
+ * */
+
     public void Menu() throws ParseException{
 
         int option = 1;
@@ -39,10 +60,10 @@ public class Manager {
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 
         while(option != 0){
+        System.out.println("CONTACT MANAGEMENT SYSTEM");
         System.out.println("=====================================");
-        System.out.println("Contact's Consult");
+        System.out.println("OPTIONS");
         System.out.println("=====================================");
-        System.out.println("Options: ");
         System.out.println("1. Add contact");
         System.out.println("2. Eliminate contact");
         System.out.println("3. Update contact");
@@ -57,41 +78,57 @@ public class Manager {
 
                 case 0:
 
+                        System.out.println("Saving all changes in the file.............");
+                        System.out.println("All under control.");
                         System.out.println("Have a nice day, thank you for trusting on us");
-                    break;
+                    
+                        break;
 
                 case 1: 
 
-                        in = new Scanner (System.in);
+                    try{
 
-                        System.out.println("Type the name of the contact below:");
-                    buff_name = in.nextLine();
+                            in = new Scanner (System.in);
 
-                        System.out.println("Type the surname of the contact below:");
-                    buff_surname = in.nextLine();
+                            System.out.println("Type the name of the contact below:");
+                        buff_name = in.nextLine();
 
-                        System.out.println("Type the Birthday of the contact below: (format: dd-MM-yyyy)");
-                    buff_birth = in.next();
+                            System.out.println("Type the surname of the contact below:");
+                        buff_surname = in.nextLine();
 
-                        System.out.println("Type the email of the contact below:");
-                    buff_email = in.next();
+                            System.out.println("Type the Birthday of the contact below: (format: dd-MM-yyyy)");
+                        buff_birth = in.next();
 
-                    aux_contact = new Contact(buff_name, buff_surname, format.parse(buff_birth), buff_email);
-                   
-                    System.out.println("What interests does your contact have from the following: " + InterestMenu());
+                            System.out.println("Type the email of the contact below:");
+                        buff_email = in.next();
 
-                    in = new Scanner (System.in);
+                        if(SearchContactByEmail(buff_email) == null){
 
-                    String buff_interest = in.nextLine();
-                    String without_spaces = buff_interest.replace(" ", "");
-                    StringTokenizer token_interest = new StringTokenizer(without_spaces, ",");
+                            aux_contact = new Contact(buff_name, buff_surname, format.parse(buff_birth), buff_email);
+                        
+                            System.out.println("What interests does your contact have from the following: " + InterestMenu());
 
-                    while(token_interest.hasMoreTokens()){
+                            in = new Scanner (System.in);
 
-                        aux_contact.addInterest(token_interest.nextToken().toUpperCase());
+                            String buff_interest = in.nextLine();
+                            String without_spaces = buff_interest.replace(" ", "");
+                            StringTokenizer token_interest = new StringTokenizer(without_spaces, ",");
+
+                            while(token_interest.hasMoreTokens()){
+
+                                aux_contact.addInterest(token_interest.nextToken().toUpperCase());
+                            }
+
+                            AddContact(aux_contact);
+                        }
+
+                    else {
+                        System.out.println("Email already on the System.");
                     }
 
-                    contacts.add(aux_contact);
+                        }catch(ParseException e){
+                            System.out.println("Not a valid format for the date, try with this format: dd/MM/yyyy.");
+                            }
 
                     break;
 
@@ -105,6 +142,7 @@ public class Manager {
                     break;
 
                 case 3:
+                try{
 
                     in = new Scanner (System.in);
                         System.out.println("Type the email of the contact to update below: ");
@@ -139,6 +177,10 @@ public class Manager {
 
                     UpdateContact(aux_contact, SearchContactByEmail(buff_email));
 
+                    }catch(ParseException e){
+                            System.out.println("Not a valid format for the date, try with this format: dd/MM/yyyy.");
+                            }
+
                     break;
 
 
@@ -147,9 +189,9 @@ public class Manager {
                     ConsultContact();
                     break;
 
-
-
-
+                
+                default:
+                    System.out.println("Not a valid option. Try again.");
             }
             
         }
@@ -159,22 +201,33 @@ public class Manager {
 
 
 
-    public void AddContact (Contact contact){
+/**
+ * Function that adds a given contact to the contacts list.
+ * 
+ * @param contact Contact to add
+ * @return boolean value, false if its a problem adding the contact; true if its added without problems
+ *
+ **/
 
-        contacts.add(contact);
-    }
+    public boolean AddContact(Contact contact){
 
-    public boolean AddContact(String name, String surname, Date birthday, String email){
+        if(!checkExistence(contact.getEmail())){
 
-        if(!checkExistence(email)){
-
-            AddContact(new Contact(name, surname, birthday, email));
+            contacts.add(contact);
 
             return true;
         }
 
         return false;
     }
+
+/**
+ * Function that removes a given contact from the list.
+ * 
+ * @param email Email of the contact to remove
+ * @return boolean value, false if its a problem removing the contact; true if its removed without problems
+ *
+ **/
 
     public boolean RemoveContact (String email){
 
@@ -197,14 +250,29 @@ public class Manager {
             return false;   
         
 
-            
     }
+
+
+/**
+ * Function that updates a contact of the contacts list.
+ * 
+ * @param new_contact Contact with the new information to add
+ * @param old_contact Contact in the list to update
+ *
+ **/
 
     public void UpdateContact (Contact new_contact, Contact old_contact){
 
         int ind = contacts.indexOf(old_contact);
         contacts.set(ind, new_contact);
     }
+
+
+
+/**
+ * An interface to see Search options
+ * 
+ **/
 
     public void ConsultContact(){
 
@@ -322,6 +390,14 @@ public class Manager {
         
     }
 
+    /**
+ * Function that check the existence of a contact with a given email
+ * 
+ * @param email Enail for searching of
+ * @return boolean value, true if it exists; false if it doesn't
+ *
+ **/
+
     public boolean checkExistence(String email){
         
         Iterator <Contact> it = contacts.iterator();
@@ -336,6 +412,14 @@ public class Manager {
 
         return false;
     }
+
+
+/**
+ * A function that searches for the contact with the email given
+ *
+ * @param email email of the contact to search for
+ * @return A contact with the email given
+ * */
 
     public Contact SearchContactByEmail(String email){
         
@@ -352,6 +436,14 @@ public class Manager {
 
         return null;
     }
+
+
+/**
+ * A function that searches for the contacts with the name given
+ *
+ * @param fullname Full name of the contact to search for
+ * @return A list with all the contacts with the same name as given
+ * */
     
     public ArrayList <Contact> SearchContactByFullname(String fullname){
 
@@ -378,6 +470,13 @@ public class Manager {
         }
     }
 
+/**
+ * A function that searches for the contacts with the interest given
+ *
+ * @param interest Interest of the contact to search for
+ * @return A list with all the contacts with the same interest as given
+ * */
+
     public ArrayList <Contact> SearchContactByInterest(String interest){
         
         ArrayList <Contact> aux = new ArrayList <Contact>();
@@ -400,6 +499,14 @@ public class Manager {
             return null;
         }
     }
+
+
+    /**
+ * A function that searches for the contacts with the age given
+ *
+ * @param age Age of the contacts to search for
+ * @return A list with all the contacts with the same age as given
+ * */
 
     public ArrayList <Contact> SearchContactByAge(int age){
 
@@ -426,7 +533,13 @@ public class Manager {
         }
     }
 
-    public void mostrarContactos(){
+
+/**
+ * An interface that shows the list of contacts
+ *
+ * */
+
+    public void ShowContacts(){
 
         Iterator <Contact> it = contacts.iterator();
         
@@ -436,9 +549,26 @@ public class Manager {
         }
     }
 
+
+
+/**
+ * A function that saves all the info of the system in a file
+ *
+ * */
+
     public void SaveFile() throws IOException {
 
-        BufferedWriter bw = new BufferedWriter(new FileWriter(new File("contact.txt")));
+        Properties properties = new Properties();
+
+        InputStream file_ = null;
+
+        file_ = new FileInputStream("properties.properties");
+
+        properties.load(file_);
+
+        String path = properties.getProperty("Directory");
+
+        BufferedWriter bw = new BufferedWriter(new FileWriter(new File(path)));
 
         for (Contact contact : contacts) {
             
@@ -449,12 +579,27 @@ public class Manager {
         bw.close();
     }
 
+
+
+/**
+ * A function that reads all the info of a file and load it all in the system
+ *
+ * */
     public void LoadFile() throws ParseException{
         
 
         try{
+            Properties properties = new Properties();
+
+            InputStream file_ = null;
+
+            file_ = new FileInputStream("properties.properties");
+
+            properties.load(file_);
+
+            String path = properties.getProperty("Directory");
             
-            BufferedReader br = new BufferedReader(new FileReader(new File("contact.txt")));
+            BufferedReader br = new BufferedReader(new FileReader(new File(path)));
             String line;
             String [] array = new String[5];
 
@@ -491,6 +636,10 @@ public class Manager {
     }
 
 
+/**
+ * An interface that shows the list of existing interests
+ *
+ * */
 
     public ArrayList <String> InterestMenu(){
 

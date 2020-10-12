@@ -11,5 +11,4 @@ public enum Interest {
     GAMING,
     DESIGN,
     MARTIALARTS
-    
 }
