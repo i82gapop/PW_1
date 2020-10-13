@@ -1,6 +1,8 @@
 package board_manager;
 
 import java.util.ArrayList;
+import java.util.Date;
+
 import contact_manager_package.Contact;
 
 public class Individualized_Post extends Post{
@@ -9,9 +11,9 @@ public class Individualized_Post extends Post{
 
     public Individualized_Post(){};
 
-    public Individualized_Post(int identifier, String title, String body, Contact owner, ArrayList <Contact> recipients){
+    public Individualized_Post(int identifier, String title, String body, Contact owner, ArrayList<Contact> destinators, Date publication, ArrayList <Contact> recipients){
 
-        super(identifier, title, body, owner);
+        super(identifier, title, body, owner, destinators, publication);
 
         this.recipients = recipients;
     }

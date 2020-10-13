@@ -1,5 +1,7 @@
 package board_manager;
 
+import java.util.Date;
+import java.util.ArrayList;
 import contact_manager_package.Contact;
 
 public abstract class Post {
@@ -8,15 +10,21 @@ public abstract class Post {
     protected String title;
     protected String body;
     protected Contact owner;
+    protected ArrayList<Contact> destinators;
+    protected Date publication;
+    //protected status;
 
     public Post(){};
 
-    public Post(int identifier, String title, String body, Contact owner){
+    public Post(int identifier, String title, String body, Contact owner, ArrayList<Contact> destinators, Date publication){
 
         this.identifier = identifier;
         this.title = title;
         this.body = body;
         this.owner = owner;
+        this.destinators = destinators;
+        this.publication = publication;
+        
     }
 
     public int getIdentifier() {return identifier;}

@@ -284,8 +284,8 @@ public class Manager {
 
     public void UpdateContact (Contact new_contact, Contact old_contact){
 
-        int ind = contacts.indexOf(old_contact);
-        contacts.set(ind, new_contact);
+        int index = contacts.indexOf(old_contact);
+        contacts.set(index, new_contact);
     }
 
 
