@@ -46,7 +46,7 @@ public class PostManager {
     public void Menu() throws ParseException{
 
         Contact user;
-        String buff_title, buff_body, title, body, log_username, buff_interest, buff_recipients, without_spaces;
+        String buff_title, buff_body, log_username, buff_interest, buff_recipients, without_spaces;
     
         System.out.println("ADVERTISEMENTS MANAGEMENT SYSTEM");
         System.out.println("Type your email to login in: ");
@@ -67,6 +67,7 @@ public class PostManager {
             System.out.println("3. Edit a post");
             System.out.println("4. Remove a post");
             System.out.println("5. Search a post");
+            System.out.println("6. Show board");
             System.out.println("0. Exit the menu");
             System.out.println("=====================================");
             System.out.println("Your option: ");
@@ -86,12 +87,7 @@ public class PostManager {
                     case 1: 
                     
                         Post_Creator_Board aux_post_creator = new Post_Creator_Board();
-                        Post aux_post;
-
-                        Date start = new Date();
-                        Date end = new Date();
-
-                        
+                        Post aux_post;                       
 
                     	int opt;
                     	in = new Scanner (System.in);
@@ -116,6 +112,7 @@ public class PostManager {
                                 System.out.println("Post created successfully.");
                             
                                 aux_post = aux_post_creator.getPost(Type.GENERAL, posts.size(), buff_title, buff_body, user, null, null, null, null);
+                                aux_post.setType(Type.GENERAL);
                             
                                 AddPost(aux_post);
 
@@ -152,6 +149,7 @@ public class PostManager {
                                 }
                                 
                                 aux_post = aux_post_creator.getPost(Type.THEMATIC, posts.size(), buff_title, buff_body, user, null, aux_interests, null, null);
+                                aux_post.setType(Type.THEMATIC);
 
                                 AddPost(aux_post);
 
@@ -186,6 +184,7 @@ public class PostManager {
                                 }
 
                                 aux_post = aux_post_creator.getPost(Type.INDIVIDUALIZED, posts.size(), buff_title, buff_body, user, aux_recipients, null, null, null);
+                                aux_post.setType(Type.INDIVIDUALIZED);
 
                                 AddPost(aux_post);
 
@@ -193,10 +192,20 @@ public class PostManager {
 
                             case 4:
 
-                                title = "TITULO4";
-                                body = "CUERPO4";
+                                in = new Scanner (System.in);
+                                System.out.println("Type the title of the post: ");
+                                buff_title = in.nextLine();
+                                System.out.println("Type the body of the post: ");
+                                buff_body = in.nextLine();
+                                System.out.println("When do you want to post it?: ");
+                                String buff_date_pub = in.next();
+                                System.out.println("When do you want to remove it?: ");
+                                String buff_date_end = in.next();
 
-                                aux_post = aux_post_creator.getPost(Type.FLASH, posts.size(), title, body, user, null, null, start, end);
+
+                                aux_post = aux_post_creator.getPost(Type.FLASH, posts.size(), buff_title, buff_body, user, null, null, format.parse(buff_date_pub), format.parse(buff_date_end));
+                                aux_post.setType(Type.FLASH);
+
 
                                 AddPost(aux_post);
 
@@ -239,6 +248,7 @@ public class PostManager {
                                 System.out.println("Type the new title of the post: ");
                                 buff_title = in.next();
                                 posts.get(id).setTitle(buff_title);
+                                
                             }
 
                         }
@@ -262,8 +272,97 @@ public class PostManager {
                     case 5:
 
                         ConsultPost();
-                    
-                    
+
+                    case 6:
+
+                        System.out.println("=====================================");
+                        System.out.println("Showing the board for " + log_username);
+                        System.out.println("=====================================");
+                        System.out.println("General Posts: ");
+                        for(int i = 0; i < posts.size(); i++){
+
+                            if((posts.get(i).getType() == Type.GENERAL) && (posts.get(i).getStatus()!= Status.POSTED)){
+
+                                System.out.println("Post ID: " + posts.get(i).getIdentifier());
+                                System.out.println("Post Title: " + posts.get(i).getTitle());
+                                System.out.println("Post Body: " + posts.get(i).getBody());
+                                System.out.println("Post Owner: " + posts.get(i).getOwner());
+                                System.out.println("Post ID: " + posts.get(i).getIdentifier());
+
+                            }
+
+                        }
+                        System.out.println("=====================================");
+                        System.out.println("Thematic Posts: ");
+                        System.out.println("=====================================");
+
+                        for(int i = 0; i < posts.size(); i++){
+
+                            if((posts.get(i).getType() == Type.THEMATIC) && (posts.get(i).getStatus()!= Status.POSTED)){
+                                if(posts.get(i) instanceof Thematic_Post) {
+                                    if(((Individualized_Post) posts.get(i)).getRecipients().contains(log_username)){
+
+                                System.out.println("Post ID: " + posts.get(i).getIdentifier());
+                                System.out.println("Post Title: " + posts.get(i).getTitle());
+                                System.out.println("Post Body: " + posts.get(i).getBody());
+                                System.out.println("Post Owner: " + posts.get(i).getOwner());
+                                System.out.println("Post ID: " + posts.get(i).getIdentifier());
+
+                                    }
+
+                                }
+
+                            }
+                        }
+
+                        System.out.println("=====================================");
+                        System.out.println("Individualized Posts: ");
+                        System.out.println("=====================================");
+
+                        for(int i = 0; i < posts.size(); i++){
+
+                            if((posts.get(i).getType() == Type.INDIVIDUALIZED) && (posts.get(i).getStatus()== Status.POSTED)){
+                                if(posts.get(i) instanceof Individualized_Post) {
+                                    if(((Individualized_Post) posts.get(i)).getRecipients().contains(log_username)){
+
+                                System.out.println("Post ID: " + posts.get(i).getIdentifier());
+                                System.out.println("Post Title: " + posts.get(i).getTitle());
+                                System.out.println("Post Body: " + posts.get(i).getBody());
+                                System.out.println("Post Owner: " + posts.get(i).getOwner());
+                                System.out.println("Post ID: " + posts.get(i).getIdentifier());
+
+                                    }
+
+                                }
+
+                            }
+                        }
+
+
+
+
+                        System.out.println("=====================================");
+                        System.out.println("Flash Posts: ");
+                        System.out.println("=====================================");
+
+                        for(int i = 0; i < posts.size(); i++){
+
+                            if((posts.get(i).getType() == Type.INDIVIDUALIZED) && (posts.get(i).getStatus()!= Status.POSTED) ){
+                                
+                            
+                                System.out.println("Post ID: " + posts.get(i).getIdentifier());
+                                System.out.println("Post Title: " + posts.get(i).getTitle());
+                                System.out.println("Post Body: " + posts.get(i).getBody());
+                                System.out.println("Post Owner: " + posts.get(i).getOwner());
+                                System.out.println("Post ID: " + posts.get(i).getIdentifier());
+
+                                
+
+                            }
+
+                        }
+
+
                     	break;
                     
                     default:

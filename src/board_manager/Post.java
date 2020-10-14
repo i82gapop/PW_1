@@ -12,6 +12,7 @@ public abstract class Post {
     protected Contact owner;
     protected Date publication;
     protected Status status;
+    protected Type type;
 
     public Post(){};
 
@@ -24,6 +25,7 @@ public abstract class Post {
         this.publication = new Date();
     }
 
+    public Type getType(){return type;}
     public int getIdentifier() {return identifier;}
     public String getTitle() {return title;}
     public String getBody() {return body;}
@@ -48,6 +50,7 @@ public abstract class Post {
     public void setOwner(Contact owner){this.owner = owner;}
     public void setPublication(){this.publication = new Date();}
     public void setStatus(Status status) {this.status = status;}
+    public void setType(Type type){this.type = type;}
 
     public String toString(){
 
