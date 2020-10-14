@@ -2,6 +2,7 @@ package board_manager;
 
 import contact_manager_package.Contact;
 import java.util.Date;
+import java.util.ArrayList;
 
 /**
  * The abstract factory to create posts
@@ -14,5 +15,5 @@ import java.util.Date;
 
 public interface Post_Creator {
     
-    public Post getPost(Type type, int identifier, String title, String body, Contact owner, Date publication);
+    public Post getPost(Type type, int identifier, String title, String body, Contact owner, ArrayList <String> recipients, ArrayList <String> interests, Date date_start, Date date_end);
 }

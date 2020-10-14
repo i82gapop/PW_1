@@ -1,7 +1,6 @@
 package board_manager;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import contact_manager_package.Contact;
 
@@ -9,9 +8,11 @@ public class Thematic_Post extends Post{
     
     protected ArrayList <String> interests = new ArrayList <String>();
 
-    public Thematic_Post(int identifier, String title, String body, Contact owner, Date publication){
+    public Thematic_Post(int identifier, String title, String body, Contact owner, ArrayList <String> interests){
 
-        super(identifier, title, body, owner, publication);
+        super(identifier, title, body, owner);
+
+        this.interests = interests;
     }
 
     public ArrayList <String> getInterests() {return interests;}
@@ -22,12 +23,17 @@ public class Thematic_Post extends Post{
 
         if(interests!=null){
 
-            return "Post {ID: " + identifier + "; Title: " + title + "; Body: " + body + "; Owner: " + owner + "; Publication: " + publication + "; Interests: " + interests + "}";
+            return "Post {ID: " + identifier + "; Title: " + title + "; Body: " + body + "; Owner: " + owner.getFullname() + "; Publication: " + publication + "; Interests: " + interests + "}";
         }
 
         else{
 
-            return "Post {ID: " + identifier + "; Title: " + title + "; Body: " + body + "; Owner: " + owner + "; Publication: " + publication + "}";
+            return "Post {ID: " + identifier + "; Title: " + title + "; Body: " + body + "; Owner: " + owner.getFullname() + "; Publication: " + publication + "}";
         }
+    }
+
+    public String toStringFile(){
+
+        return identifier + "|" + title + "|" + body + "|" + owner.getFullname() + "|" + getPublicationString() + "|" + getStatusString() + "|" + interests;
     }
 }
