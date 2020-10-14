@@ -65,7 +65,7 @@ public class PostManager {
                     System.out.println("Your option: ");
                     option = in.nextInt();
                     switch(option) {
-                    	cas
+                    	case 1:
                     }
 
 
