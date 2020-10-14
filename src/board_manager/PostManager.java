@@ -19,6 +19,16 @@ public class PostManager {
 	private Manager manager = Manager.getInstance();
 	
 
+	
+	
+	
+	public void menu() {
+		
+		
+		
+		
+		
+	}
 
 	public boolean checkExistence(int id){
         
