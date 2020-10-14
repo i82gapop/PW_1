@@ -26,6 +26,7 @@ public class PostManager {
         
         while(it.hasNext()){
 
+        	
             if(it.next().getIdentifier() == id){
                 
                 return true;
