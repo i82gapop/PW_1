@@ -70,6 +70,7 @@ public class Manager {
         System.out.println("2. Eliminate contact");
         System.out.println("3. Update contact");
         System.out.println("4. Consult contacts");
+        System.out.println("5. Show all contacts");
         System.out.println("0. Exit the menu");
         System.out.println("=====================================");
         System.out.println("Your option: ");
@@ -209,8 +210,13 @@ public class Manager {
 
                     ConsultContact();
                     break;
-
-                
+                case 5:
+                	System.out.println("Showing all contacts of the contact manager");
+                    for(int i = 0; i < contacts.size(); i++){
+                        
+                        System.out.println(contacts.get(i));
+                    }
+                	break;
                 default:
                     System.out.println("Not a valid option. Try again.");
             }
