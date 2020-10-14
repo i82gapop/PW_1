@@ -14,5 +14,5 @@ import java.util.Date;
 
 public interface Post_Creator {
     
-    public Post getPost(String type, int identifier, String title, String body, Contact owner, Date publication);
+    public Post getPost(Type type, int identifier, String title, String body, Contact owner, Date publication);
 }
