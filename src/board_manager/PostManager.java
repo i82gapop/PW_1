@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 
 public class PostManager {
@@ -21,14 +22,82 @@ public class PostManager {
 
 	
 	
-	
-	public void menu() {
-		
-		
-		
-		
-		
-	}
+	public void Menu() throws ParseException{
+
+        int option = 1;
+
+        while(option != 0){
+        System.out.println("ADVERTISEMENTS MANAGEMENT SYSTEM");
+        System.out.println("OPTIONS");
+        System.out.println("=====================================");
+        System.out.println("=====================================");
+        System.out.println("1. Create a post");
+        System.out.println("2. Post a post");
+        System.out.println("3. Edit a post");
+        System.out.println("4. Remove a post");
+        System.out.println("5. Search a post");
+        System.out.println("0. Exit the menu");
+        System.out.println("=====================================");
+        System.out.println("Your option: ");
+        
+        option = in.nextInt();
+
+            switch(option){
+
+                case 0:
+
+                        System.out.println("Saving all changes in the file.............");
+                        System.out.println("All under control.");
+                        System.out.println("Have a nice day, thank you for trusting on us.");
+                    
+                        break;
+
+                case 1: 
+                	
+                	in = new Scanner (System.in);
+                    System.out.println("What type of post do you want to create?: ");
+                    System.out.println("1. General Post.");
+                    System.out.println("2. Thematic Post.");
+                    System.out.println("3. Individualized Post.");
+                    System.out.println("4. Flash Post");
+                    System.out.println("0. Cancel");
+                    System.out.println("=====================================");
+                    System.out.println("Your option: ");
+                    option = in.nextInt();
+                    switch(option) {
+                    	cas
+                    }
+
+
+                    break;
+
+                case 2:
+
+
+                    break;
+
+                case 3:
+               
+
+                	break;
+                case 4:
+
+                
+                    break;
+                  
+                case 5:
+                	
+                	
+                	break;
+                
+                default:
+                    System.out.println("Not a valid option. Try again.");
+            }
+            
+        }
+
+    }
+
 
 	public boolean checkExistence(int id){
         
@@ -333,6 +402,9 @@ public class PostManager {
     	
     	
     }
+    
+    
+    
     
 }
 
