@@ -9,8 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
-import java.util.Date;
-import java.text.*;
 import java.io.*;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -331,19 +329,23 @@ public class PostManager {
                         System.out.println("Thematic Posts: ");
                         System.out.println("=====================================");
 
+                        int trigger = 0;
+
                         for(int i = 0; i < posts.size(); i++){
                             if((posts.get(i).getType() == Type.THEMATIC) && (posts.get(i).getStatus()== Status.POSTED)){
                                 if(posts.get(i) instanceof Thematic_Post) {
+                                    
                                 	for(int j = 0; j < user.getInterests().size(); j++) {
-                                        if(((Thematic_Post) posts.get(i)).getInterests().contains(user.getInterests().get(j))){
 
+                                        if((((Thematic_Post) posts.get(i)).getInterests().contains(user.getInterests().get(j))) && (trigger==0)){
+
+                                            trigger++;
                                             System.out.println(posts.get(i).toString());
-                                            
-                                  		}
+                                        }                                        
                                     }
 
+                                    trigger = 0;
                                 }
-
                             }
                         }
 

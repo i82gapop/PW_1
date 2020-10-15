@@ -13,8 +13,6 @@ public class Principal {
 
         system.Menu();
 
-        system.imprimirPost();
-
         system.SaveFile();
     }
 }
