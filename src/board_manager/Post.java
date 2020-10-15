@@ -35,7 +35,12 @@ public abstract class Post {
 
     public String getStatusString(){
 
-        return this.status.name();
+        return status.name();
+    }
+
+    public String getTypeString(){
+
+        return type.name();
     }
 
     public String getPublicationString(){
@@ -48,7 +53,7 @@ public abstract class Post {
     public void setTitle(String title){this.title = title;}
     public void setBody(String body){this.body = body;}
     public void setOwner(Contact owner){this.owner = owner;}
-    public void setPublication(){this.publication = new Date();}
+    public void setPublication(Date date){this.publication = date;}
     public void setStatus(Status status) {this.status = status;}
     public void setType(Type type){this.type = type;}
 
@@ -59,6 +64,6 @@ public abstract class Post {
 
     public String toStringFile(){
 
-        return identifier + "|" + title + "|" + body + "|" + owner.getFullname() + "|" + getPublicationString() + "|" + getStatusString();
+        return getType() + "|" + identifier + "|" + title + "|" + body + "|" + owner.getEmail() + "|" + getPublicationString() + "|" + getStatus();
     }
 }

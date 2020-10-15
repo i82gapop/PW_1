@@ -34,6 +34,6 @@ public class Individualized_Post extends Post{
 
     public String toStringFile(){
 
-        return identifier + "|" + title + "|" + body + "|" + owner.getFullname() + "|" + getPublicationString() + "|" + getStatusString() + "|" + recipients;
+        return  getType() + "|" + identifier + "|" + title + "|" + body + "|" + owner.getEmail() + "|" + getPublicationString() + "|" + getStatus() + "|" + recipients;
     }
 }

@@ -34,6 +34,6 @@ public class Thematic_Post extends Post{
 
     public String toStringFile(){
 
-        return identifier + "|" + title + "|" + body + "|" + owner.getFullname() + "|" + getPublicationString() + "|" + getStatusString() + "|" + interests;
+        return  getType() + "|" + identifier + "|" + title + "|" + body + "|" + owner.getEmail() + "|" + getPublicationString() + "|" + getStatus() + "|" + interests;
     }
 }

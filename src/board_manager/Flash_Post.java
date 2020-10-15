@@ -44,6 +44,6 @@ public class Flash_Post extends Post{
 
     public String toStringFile(){
 
-        return identifier + "|" + title + "|" + body + "|" + owner.getFullname() + "|" + getPublicationString() + "|" + getStatusString() + "|" + getDateString();
+        return  getType() + "|" + identifier + "|" + title + "|" + body + "|" + owner.getEmail() + "|" + getPublicationString() + "|" + getStatus() + "|" + getDateString();
     }
 }
