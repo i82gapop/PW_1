@@ -43,7 +43,8 @@ public class PostManager {
         return instance;
     }
 
-    public void Menu() throws ParseException{
+    @SuppressWarnings("unlikely-arg-type")
+	public void Menu() throws ParseException{
 
         Contact user;
         String buff_title, buff_body, log_username, buff_interest, buff_recipients, without_spaces;
@@ -272,6 +273,7 @@ public class PostManager {
                     case 5:
 
                         ConsultPost();
+                        break;
 
                     case 6:
 
@@ -281,7 +283,7 @@ public class PostManager {
                         System.out.println("General Posts: ");
                         for(int i = 0; i < posts.size(); i++){
 
-                            if((posts.get(i).getType() == Type.GENERAL) && (posts.get(i).getStatus()!= Status.POSTED)){
+                            if((posts.get(i).getType() == Type.GENERAL) && (posts.get(i).getStatus()== Status.POSTED)){
 
                                 System.out.println("Post ID: " + posts.get(i).getIdentifier());
                                 System.out.println("Post Title: " + posts.get(i).getTitle());
@@ -297,17 +299,18 @@ public class PostManager {
                         System.out.println("=====================================");
 
                         for(int i = 0; i < posts.size(); i++){
-
-                            if((posts.get(i).getType() == Type.THEMATIC) && (posts.get(i).getStatus()!= Status.POSTED)){
+                            if((posts.get(i).getType() == Type.THEMATIC) && (posts.get(i).getStatus()== Status.POSTED)){
                                 if(posts.get(i) instanceof Thematic_Post) {
-                                    if(((Individualized_Post) posts.get(i)).getRecipients().contains(log_username)){
+                                	for(int j = 0; j < user.getInterests().size(); j++) {
+                                  if(((Thematic_Post) posts.get(i)).getInterests().contains(user.getInterests().get(j))){
 
-                                System.out.println("Post ID: " + posts.get(i).getIdentifier());
-                                System.out.println("Post Title: " + posts.get(i).getTitle());
-                                System.out.println("Post Body: " + posts.get(i).getBody());
-                                System.out.println("Post Owner: " + posts.get(i).getOwner());
-                                System.out.println("Post ID: " + posts.get(i).getIdentifier());
-
+                                	  System.out.println("Post ID: " + posts.get(i).getIdentifier());
+                                	  System.out.println("Post Title: " + posts.get(i).getTitle());
+                                	  System.out.println("Post Body: " + posts.get(i).getBody());
+                                	  System.out.println("Post Owner: " + posts.get(i).getOwner());
+                                	  System.out.println("Post ID: " + posts.get(i).getIdentifier());
+                                
+                                  		}
                                     }
 
                                 }
@@ -347,7 +350,7 @@ public class PostManager {
 
                         for(int i = 0; i < posts.size(); i++){
 
-                            if((posts.get(i).getType() == Type.INDIVIDUALIZED) && (posts.get(i).getStatus()!= Status.POSTED) ){
+                            if((posts.get(i).getType() == Type.FLASH) && (posts.get(i).getStatus()== Status.POSTED) ){
                                 
                             
                                 System.out.println("Post ID: " + posts.get(i).getIdentifier());
