@@ -22,7 +22,6 @@ public abstract class Post {
         this.title = title;
         this.body = body;
         this.owner = owner;
-        this.publication = new Date();
     }
 
     public Type getType(){return type;}
@@ -45,8 +44,17 @@ public abstract class Post {
 
     public String getPublicationString(){
 
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-		return format.format(publication);
+        SimpleDateFormat date_format = new SimpleDateFormat("dd-MM-yyyy");
+        
+        if(publication!=null){
+        	
+        	return date_format.format(publication);
+        }
+        
+        else{
+        	
+        	return null;
+        }
     }
 
     public void setIdentifier(int identifier){this.identifier = identifier;}

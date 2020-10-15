@@ -11,7 +11,6 @@ public class Individualized_Post extends Post{
     public Individualized_Post(int identifier, String title, String body, Contact owner, ArrayList <String> recipients){
 
         super(identifier, title, body, owner);
-
         this.recipients = recipients;
     }
 

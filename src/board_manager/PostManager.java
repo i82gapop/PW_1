@@ -7,6 +7,7 @@ import contact_manager_package.Manager;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.io.*;
@@ -41,7 +42,6 @@ public class PostManager {
         return instance;
     }
 
-    @SuppressWarnings("unlikely-arg-type")
 	public void Menu() throws ParseException{
 
         Contact user;
@@ -84,6 +84,7 @@ public class PostManager {
                         break;
                     
                     case 1: 
+                        try{
                     
                         Post_Creator_Board aux_post_creator = new Post_Creator_Board();
                         Post aux_post;                       
@@ -196,9 +197,9 @@ public class PostManager {
                                 buff_title = in.nextLine();
                                 System.out.println("Type the body of the post: ");
                                 buff_body = in.nextLine();
-                                System.out.println("When do you want to post it?: ");
+                                System.out.println("When do you want to post it?: (format: dd-MM-yyyy)");
                                 String buff_date_pub = in.next();
-                                System.out.println("When do you want to remove it?: ");
+                                System.out.println("When do you want to remove it?: (format: dd-MM-yyyy)");
                                 String buff_date_end = in.next();
 
 
@@ -210,6 +211,12 @@ public class PostManager {
 
                                 break;
                         }
+
+
+
+                            }catch(ParseException e){
+                                System.out.println("Not a valid format for the date, try with this format: dd-MM-yyyy.");
+                            }
                     
                         break;
                     
@@ -217,7 +224,15 @@ public class PostManager {
                         in = new Scanner (System.in);
                         System.out.println("Type the id of the post to post: ");
                         id = in.nextInt();
+
+
+                         if(posts.get(id).getOwner() == user){
                         ToPost(id);
+                        }
+                        else{
+                            System.out.println("You are not the owner of this post. ");
+                        }
+                        
                         
                     
                     
@@ -249,7 +264,7 @@ public class PostManager {
 
                             else if(posts.get(id).getType() == Type.FLASH){
                                 System.out.println("3. Publication date");
-                                System.out.println("3. End date");
+                                System.out.println("4. End date");
 
                             }
 
@@ -272,6 +287,7 @@ public class PostManager {
                                 buff_body = in.next();
                                 posts.get(id).setBody(buff_body);
                                 }
+                            
 
                             }
                             else{
@@ -425,7 +441,8 @@ public class PostManager {
 	public boolean AddPost(Post post) {
 		
 		if(posts.add(post)){
-			post.setStatus(Status.EDITED);
+
+            post.setStatus(Status.EDITED);
 			return true;
 		}
 
@@ -437,10 +454,36 @@ public class PostManager {
 	public void ToPost(int id) {
     
         for(int i = 0; i < posts.size(); i++){
-            if(posts.get(i).getIdentifier() == id){
+            if((posts.get(i).getIdentifier() == id) && (posts.get(i).getStatus() != Status.ARCHIVED)){
 
-                posts.get(i).setStatus(Status.POSTED);
-                System.out.println("Post posted successfully");
+
+                if(posts.get(i).getType() == Type.FLASH){
+                    if(posts.get(i) instanceof Flash_Post) {
+                        Date aux_date = new Date();
+
+                        if((aux_date.compareTo(((Flash_Post) posts.get(i)).getDateStart()))<0){
+
+                            posts.get(i).setPublication(((Flash_Post) posts.get(i)).getDateStart());
+                            posts.get(i).setStatus(Status.WAITING);
+                            System.out.println("Your post has been put into a Waiting status.");
+
+                        }
+                        else{
+                            Date date = new Date();
+                            posts.get(i).setPublication(date);
+                            posts.get(i).setStatus(Status.POSTED);
+                            System.out.println("Post posted successfully");
+                        }   
+
+                    }
+                }
+
+                else{
+                    Date date = new Date();
+                    posts.get(i).setPublication(date);
+                    posts.get(i).setStatus(Status.POSTED);
+                    System.out.println("Post posted successfully");
+                }
             } 
         }
 
@@ -780,7 +823,12 @@ public class PostManager {
                 if(array[0].equals("GENERAL")){
 
                     aux_post = aux_post_creator.getPost(Type.GENERAL, Integer.parseInt(array[1]), array[2], array[3], manager.SearchContactByEmail(array[4]), null, null, null, null);
-                    aux_post.setPublication(aux_date.parse(array[5]));
+
+                    if(!array[5].equals("null")){
+
+                        aux_post.setPublication(aux_date.parse(array[5]));
+                    }
+                    
                     aux_post.setType(Type.GENERAL);
                     aux_post.setStatus(Status.valueOf(array[6]));
                 }
@@ -798,7 +846,12 @@ public class PostManager {
                     }
 
                     aux_post = aux_post_creator.getPost(Type.INDIVIDUALIZED, Integer.parseInt(array[1]), array[2], array[3], manager.SearchContactByEmail(array[4]), aux_ind_array, null, null, null);
-                    aux_post.setPublication(aux_date.parse(array[5]));
+                    
+                    if(!array[5].equals("null")){
+
+                        aux_post.setPublication(aux_date.parse(array[5]));
+                    }
+
                     aux_post.setType(Type.INDIVIDUALIZED);
                     aux_post.setStatus(Status.valueOf(array[6]));
                 }
@@ -816,7 +869,12 @@ public class PostManager {
                     }
 
                     aux_post = aux_post_creator.getPost(Type.THEMATIC, Integer.parseInt(array[1]), array[2], array[3], manager.SearchContactByEmail(array[4]), null, aux_ind_array, null, null);
-                    aux_post.setPublication(aux_date.parse(array[5]));
+                    
+                    if(!array[5].equals("null")){
+
+                        aux_post.setPublication(aux_date.parse(array[5]));
+                    }
+
                     aux_post.setType(Type.THEMATIC);
                     aux_post.setStatus(Status.valueOf(array[6]));
                 }
@@ -824,9 +882,26 @@ public class PostManager {
                 else{
 
                     aux_post = aux_post_creator.getPost(Type.FLASH, Integer.parseInt(array[1]), array[2], array[3], manager.SearchContactByEmail(array[4]), null, null, aux_date.parse(array[7]), aux_date.parse(array[8]));
-                    aux_post.setPublication(aux_date.parse(array[5]));
+                    
+                    if(!array[5].equals("null")){
+
+                        aux_post.setPublication(aux_date.parse(array[5]));
+                    }
+
                     aux_post.setType(Type.FLASH);
                     aux_post.setStatus(Status.valueOf(array[6]));
+                    
+                    Date aux = new Date();
+
+                    if(((aux.compareTo(aux_date.parse(array[7]))>=0)) && ((aux.compareTo(aux_date.parse(array[8])) <= 0)) && (aux_post.getStatus().equals(Status.WAITING))){
+
+                        aux_post.setStatus(Status.POSTED);
+                    }
+
+                    if(((aux.compareTo(aux_date.parse(array[8]))>=0)) && (aux_post.getStatus().equals(Status.POSTED))){
+
+                        aux_post.setStatus(Status.ARCHIVED);
+                    }
                 }
 
                 posts.add(aux_post);
@@ -837,14 +912,4 @@ public class PostManager {
             System.out.println("File not found.");
         }
     }
-
-
-    public void imprimirPost(){
-
-        for (Post post : posts) {
-            
-            System.out.println(post.toStringFile());
-        }
-    }
-
 }
