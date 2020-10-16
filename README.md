@@ -8,8 +8,8 @@ A project that contains two programs, a contact manager and a post manager, both
 In terminal:
 Use the following commands to execute the two programs:
 
-java lo que sea # contact manager program
-java lo que sea # post manager program
+java -jar contact_manager.jar # contact manager program
+java -jar post_manager.jar # post manager program
 ```
 
 ## Files 📦
