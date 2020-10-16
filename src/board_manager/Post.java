@@ -16,7 +16,7 @@ import contact_manager_package.Contact;
 
 
 
-public abstract class Post {
+public abstract class Post implements Comparable<Post>{
 
   //Attributes
 
@@ -154,6 +154,8 @@ public abstract class Post {
         }
     }
 
+    
+    
 
     /**
   	 * Sets the id of a post
@@ -230,4 +232,13 @@ public abstract class Post {
 
         return getType() + "|" + identifier + "|" + title + "|" + body + "|" + owner.getEmail() + "|" + getPublicationString() + "|" + getStatus();
     }
+    
+    
+    @Override
+    public int compareTo(Post o) {
+      return getPublication().compareTo(o.getPublication());
+    }
+    
+
+
 }
