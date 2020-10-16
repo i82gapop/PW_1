@@ -1,6 +1,11 @@
 # PW_1
 A project made by the students Rubén Borrego Canovaca and Pedro Pablo García Pozo for web programation
 
+## Creators
+
+https://github.com/LepreprechauN 
+https://github.com/i82gapop
+
 
 ## Usage
 
