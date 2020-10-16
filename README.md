@@ -4,7 +4,8 @@ A project made by the students Rubén Borrego Canovaca and Pedro Pablo García P
 
 ## Usage
 
-```java
+```python
+In terminal:
 Use the following commands to execute the two programs
 
 java lo que sea # contact manager program
