@@ -14,6 +14,11 @@ java lo que sea # post manager program
 
 ## Files 📦
 
+All files that the project contains:
+
+* [contact.txt] - file where the contacts are saved with their information
+* [post.txt] - file where the posts are saved with their information
+* [properties.properties] - properties file used for charge all the other files in the program
 
 
 ## Programs used 🛠️
