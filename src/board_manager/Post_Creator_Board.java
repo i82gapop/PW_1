@@ -4,32 +4,42 @@ import contact_manager_package.Contact;
 import java.util.Date;
 import java.util.ArrayList;
 
+
+/**
+ * The concrete factory that creates posts by their type
+ * @author Pedro Pablo Garcia Pozo
+ * @author Ruben Borrego Canovaca
+ * @since 26-09-2020
+ * @version 2.0
+ * */
+
+
 public class Post_Creator_Board implements Post_Creator{
-    
+
     public Post getPost(Type type, int identifier, String title, String body, Contact owner, ArrayList <String> recipients, ArrayList <String> interests, Date date_start, Date date_end){
 
         if(type == Type.GENERAL){
 
             return new General_Post(identifier, title, body, owner);
         }
-    
+
         else if(type == Type.INDIVIDUALIZED){
 
             return new Individualized_Post(identifier, title, body, owner, recipients);
         }
-    
+
         else if(type == Type.THEMATIC){
-    
+
             return new Thematic_Post(identifier, title, body, owner, interests);
         }
-    
+
         else if(type == Type.FLASH){
-    
+
             return new Flash_Post(identifier, title, body, owner, date_start, date_end);
         }
-    
+
         else{
-    
+
             return null;
         }
     }

@@ -28,7 +28,7 @@ public class Manager {
     private Scanner in = new Scanner (System.in);
 
     // private constructor
-    
+
     private Manager(){
 
         this.contacts = new ArrayList <Contact>();
@@ -41,7 +41,7 @@ public class Manager {
     public static Manager getInstance(){
 
         if(instance == null){
-            
+
             instance = new Manager();
         }
 
@@ -50,8 +50,9 @@ public class Manager {
 
 
 /**
- * An interface of the menu of the sytem
- * 
+ * A visual menu of the sytem
+ * @throws ParseException if the format of the dates aren't allowed
+ *
  * */
 
     public void Menu() throws ParseException{
@@ -74,7 +75,7 @@ public class Manager {
         System.out.println("0. Exit the menu");
         System.out.println("=====================================");
         System.out.println("Your option: ");
-        
+
         option = in.nextInt();
 
             switch(option){
@@ -84,10 +85,10 @@ public class Manager {
                         System.out.println("Saving all changes in the file.............");
                         System.out.println("All under control.");
                         System.out.println("Have a nice day, thank you for trusting on us");
-                    
+
                         break;
 
-                case 1: 
+                case 1:
 
                     try{
 
@@ -108,7 +109,7 @@ public class Manager {
                         if(SearchContactByEmail(buff_email) == null){
 
                             aux_contact = new Contact(buff_name, buff_surname, format.parse(buff_birth), buff_email);
-                        
+
                             System.out.println("What interests does your contact have from the following: " + interests);
 
                             in = new Scanner (System.in);
@@ -126,7 +127,7 @@ public class Manager {
                             for(int i = 0; i < token_interests.size(); i++){
 
                                 if(interests.contains(token_interests.get(i))){
-                
+
                                     aux_contact.addInterest(token_interests.get(i));
                                 }
                             }
@@ -192,7 +193,7 @@ public class Manager {
                     for(int i = 0; i < token_interests_.size(); i++){
 
                         if(interests.contains(token_interests_.get(i))){
-        
+
                             aux_contact.addInterest(token_interests_.get(i));
                         }
                     }
@@ -213,14 +214,14 @@ public class Manager {
                 case 5:
                 	System.out.println("Showing all contacts of the contact manager");
                     for(int i = 0; i < contacts.size(); i++){
-                        
+
                         System.out.println(contacts.get(i));
                     }
                 	break;
                 default:
                     System.out.println("Not a valid option. Try again.");
             }
-            
+
         }
 
     }
@@ -230,7 +231,7 @@ public class Manager {
 
 /**
  * Function that adds a given contact to the contacts list.
- * 
+ *
  * @param contact Contact to add
  * @return boolean value, false if its a problem adding the contact; true if its added without problems
  *
@@ -250,7 +251,7 @@ public class Manager {
 
 /**
  * Function that removes a given contact from the list.
- * 
+ *
  * @param email Email of the contact to remove
  * @return boolean value, false if its a problem removing the contact; true if its removed without problems
  *
@@ -259,12 +260,12 @@ public class Manager {
     public boolean RemoveContact (String email){
 
         if(checkExistence(email)){
-            
+
             for(int i = 0; i < contacts.size(); i++){
-            
+
                 if(contacts.get(i).getEmail().equals(email)){
-                    
-                    
+
+
                     contacts.remove(i);
                     System.out.println("Contact removed succesfully");
                     return true;
@@ -274,15 +275,15 @@ public class Manager {
 
 
             System.out.println("The contact doesn't exist.");
-            return false;   
-        
+            return false;
+
 
     }
 
 
 /**
  * Function that updates a contact of the contacts list.
- * 
+ *
  * @param new_contact Contact with the new information to add
  * @param old_contact Contact in the list to update
  *
@@ -297,8 +298,8 @@ public class Manager {
 
 
 /**
- * An interface to see Search options
- * 
+ * A visual menu to see Search options
+ *
  **/
 
     public void ConsultContact(){
@@ -339,10 +340,10 @@ public class Manager {
 
                     System.out.println("No results.");
                 }
-            } 
+            }
 
             else if(option == 2){
-                
+
                 System.out.println("Type the full name of the contact to search: ");
 
                 in = new Scanner (System.in);
@@ -353,7 +354,7 @@ public class Manager {
                 if((compound = SearchContactByFullname(search_term)) != null){
 
                     System.out.println("Showing the results of the search: ");
-                    
+
                     for(int i = 0; i < compound.size(); i++){
 
                         System.out.println(compound.get(i).toString());
@@ -367,14 +368,14 @@ public class Manager {
             }
 
             else if(option == 3){
-                
+
                 System.out.println("Type the interest of the contact to search: ");
                 search_term = in.next();
 
                 if((compound = SearchContactByInterest(search_term.toUpperCase())) != null){
 
                     System.out.println("Showing the results of the search: ");
-                    
+
                     for(int i = 0; i < compound.size(); i++){
 
                         System.out.println(compound.get(i).toString());
@@ -396,7 +397,7 @@ public class Manager {
                 if((compound = SearchContactByAge(search_term_int)) != null){
 
                     System.out.println("Showing the results of the search: ");
-                    
+
                     for(int i = 0; i < compound.size(); i++){
 
                         System.out.println(compound.get(i).toString());
@@ -406,33 +407,33 @@ public class Manager {
                 else{
 
                     System.out.println("No results.");
-                }          
+                }
             }
 
             else{
-                
+
                 System.out.println("Wrong option. Try using a valid option (between 0-4)");
                 option = in.nextInt();
             }
-        
+
     }
 
-    /**
+ /**
  * Function that check the existence of a contact with a given email
- * 
+ *
  * @param email Enail for searching of
  * @return boolean value, true if it exists; false if it doesn't
  *
  **/
 
     public boolean checkExistence(String email){
-        
+
         Iterator <Contact> it = contacts.iterator();
-        
+
         while(it.hasNext()){
 
             if(it.next().getEmail().equals(email)){
-                
+
                 return true;
             }
         }
@@ -449,13 +450,13 @@ public class Manager {
  * */
 
     public Contact SearchContactByEmail(String email){
-        
+
         Contact single;
 
         for(int i = 0; i < contacts.size(); i++){
-            
+
             if(contacts.get(i).getEmail().equals(email)){
-            
+
                 single = contacts.get(i);
                 return single;
             }
@@ -471,7 +472,7 @@ public class Manager {
  * @param fullname Full name of the contact to search for
  * @return A list with all the contacts with the same name as given
  * */
-    
+
     public ArrayList <Contact> SearchContactByFullname(String fullname){
 
         ArrayList <Contact> compound = new ArrayList <Contact>();
@@ -505,7 +506,7 @@ public class Manager {
  * */
 
     public ArrayList <Contact> SearchContactByInterest(String interest){
-        
+
         ArrayList <Contact> aux = new ArrayList <Contact>();
 
         for(int i = 0; i < contacts.size(); i++){
@@ -569,7 +570,7 @@ public class Manager {
     public void ShowContacts(){
 
         Iterator <Contact> it = contacts.iterator();
-        
+
         while(it.hasNext()){
 
             System.out.println(it.next().toString());
@@ -580,7 +581,7 @@ public class Manager {
 
 /**
  * A function that saves all the info of the system in a file
- *
+ * @throws IOException if the file to load doesn't exist
  * */
 
     public void SaveFile() throws IOException {
@@ -598,7 +599,7 @@ public class Manager {
         BufferedWriter bw = new BufferedWriter(new FileWriter(new File(path)));
 
         for (Contact contact : contacts) {
-            
+
             bw.write(contact.toStringFile());
             bw.write("\n");
         }
@@ -610,10 +611,11 @@ public class Manager {
 
 /**
  * A function that reads all the info of a file and load it all in the system
- *
+ * @throws ParseException if the format of the dates aren't allowed
+ * @throws IOException if the file to load doesn't exist
  * */
     public void LoadFile() throws ParseException{
-        
+
 
         try{
             Properties properties = new Properties();
@@ -625,7 +627,7 @@ public class Manager {
             properties.load(file_);
 
             String path = properties.getProperty("Directory");
-            StringTokenizer interests_token = new StringTokenizer(properties.getProperty("Interests"), ","); 
+            StringTokenizer interests_token = new StringTokenizer(properties.getProperty("Interests"), ",");
             ArrayList <String> interests_tokens = new ArrayList <String>();
 
             while(interests_token.hasMoreTokens()){
@@ -647,10 +649,10 @@ public class Manager {
 
             SimpleDateFormat aux_date = new SimpleDateFormat("dd-MM-yyyy");
             StringTokenizer token;
-            
+
             while((line = br.readLine()) != null){
 
-                token = new StringTokenizer(line, "|");            
+                token = new StringTokenizer(line, "|");
 
                 for(int i = 0; token.hasMoreTokens(); i++){
 
@@ -672,7 +674,7 @@ public class Manager {
                 for(int i = 0; i < token_interests.size(); i++){//eliminates duplicates
 
                     if(interests.contains(token_interests.get(i))){
-                
+
                         aux_contact.addInterest(token_interests.get(i));
                     }
                 }
