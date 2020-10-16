@@ -7,6 +7,7 @@ import contact_manager_package.Manager;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -29,8 +30,8 @@ public class PostManager {
 
     private static PostManager instance = null;
 
-	  SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-	  private Scanner in = new Scanner (System.in);
+	SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+	private Scanner in = new Scanner (System.in);
     private ArrayList <Post> posts;
     private ArrayList <String> interests;
     private Manager manager = Manager.getInstance();
@@ -74,7 +75,7 @@ public class PostManager {
 	public void Menu() throws ParseException{
 
         Contact user;
-        String buff_title, buff_body, log_username, buff_interest, buff_recipients, without_spaces;
+        String buff_title, buff_body, log_username, buff_interest, buff_recipients, without_spaces, buff_date_pub, buff_date_end;
 
         System.out.println("ADVERTISEMENTS MANAGEMENT SYSTEM");
         System.out.println("Type your email to login in: ");
@@ -93,7 +94,7 @@ public class PostManager {
             System.out.println("1. Create a post");
             System.out.println("2. Post a post");
             System.out.println("3. Edit a post");
-            System.out.println("4. Remove a post");
+            System.out.println("4. Archive a post");
             System.out.println("5. Search a post");
             System.out.println("6. Show board");
             System.out.println("0. Exit the menu");
@@ -227,9 +228,9 @@ public class PostManager {
                                 System.out.println("Type the body of the post: ");
                                 buff_body = in.nextLine();
                                 System.out.println("When do you want to post it?: (format: dd-MM-yyyy)");
-                                String buff_date_pub = in.next();
+                                buff_date_pub = in.next();
                                 System.out.println("When do you want to remove it?: (format: dd-MM-yyyy)");
-                                String buff_date_end = in.next();
+                                buff_date_end = in.next();
 
 
                                 aux_post = aux_post_creator.getPost(Type.FLASH, posts.size(), buff_title, buff_body, user, null, null, format.parse(buff_date_pub), format.parse(buff_date_end));
@@ -254,6 +255,8 @@ public class PostManager {
                         System.out.println("Type the id of the post to post: ");
                         id = in.nextInt();
 
+                        if(checkExistence(id)) {
+
 
                          if(posts.get(id).getOwner() == user){
                         ToPost(id);
@@ -262,12 +265,19 @@ public class PostManager {
                             System.out.println("You are not the owner of this post. ");
                         }
 
+                       }
+
+                        else {
+                        	System.out.println("That ID post doesn't exist. ");
+                        }
+
 
 
 
                         break;
 
                     case 3:
+                    	try {
 
                         in = new Scanner (System.in);
                         System.out.println("What post do you want to edit?: (type the id)");
@@ -282,8 +292,7 @@ public class PostManager {
                             System.out.println("1. Title");
                             System.out.println("2. Body");
 
-                            if(posts.get(id).getType() == Type.GENERAL){}
-                            else if(posts.get(id).getType() == Type.THEMATIC){
+                            if(posts.get(id).getType() == Type.THEMATIC){
                                     System.out.println("3. Interests");
                             }
 
@@ -317,6 +326,98 @@ public class PostManager {
                                 posts.get(id).setBody(buff_body);
                                 }
 
+                            else if(option_1 == 3){
+                              if(posts.get(id).getType() == Type.THEMATIC){
+                            	  if(posts.get(id) instanceof Thematic_Post) {
+
+                                System.out.println("Type the new interests of the post: ");
+                                in = new Scanner (System.in);
+                                buff_interest = in.nextLine();
+
+                                without_spaces = buff_interest.replace(" ", "");
+                                StringTokenizer token_interest_ = new StringTokenizer(without_spaces, ",");
+                                ArrayList <String> token_interests_ = new ArrayList <String>();
+                                ArrayList <String> aux_interests_ = new ArrayList <String>();
+
+                                while(token_interest_.hasMoreTokens()){
+
+                                    token_interests_.add(token_interest_.nextToken().toUpperCase());
+                                }
+
+                                for(int i = 0; i < token_interests_.size(); i++){
+
+                                    if(interests.contains(token_interests_.get(i))){
+
+                                       aux_interests_.add(token_interests_.get(i));
+                                    }
+                                }
+
+                                ((Thematic_Post)posts.get(id)).setInterests(aux_interests_);
+
+                            	  }
+                              }
+
+                              else if(posts.get(id).getType() == Type.INDIVIDUALIZED){
+                            	  if(posts.get(id) instanceof Individualized_Post) {
+                                System.out.println("Type the new recipients of the post: ");
+                                buff_recipients = in.nextLine();
+
+                                without_spaces = buff_recipients.replace(" ", "");
+                                StringTokenizer token_recipient_ = new StringTokenizer(without_spaces, ",");
+                                ArrayList <String> token_recipients_ = new ArrayList <String>();
+                                ArrayList<String> aux_recipients_ = new ArrayList<String>();
+
+                                while(token_recipient_.hasMoreTokens()){
+
+                                    token_recipients_.add(token_recipient_.nextToken());
+                                }
+
+                                for(int i = 0; i < token_recipients_.size(); i++){
+
+                                    if(manager.checkExistence(token_recipients_.get(i))){
+
+                                       aux_recipients_.add(token_recipients_.get(i));
+                                    }
+                                }
+
+                                ((Individualized_Post)posts.get(id)).setRecipients(aux_recipients_);
+
+
+                            	  }
+                              }
+
+                              else if(posts.get(id).getType() == Type.FLASH){
+                            	  if(posts.get(id) instanceof Flash_Post) {
+                                System.out.println("Type the new start date of the post: ");
+                                buff_date_pub = in.next();
+                                ((Flash_Post)posts.get(id)).setDateStart(format.parse(buff_date_pub));
+
+                            	  }
+                              }
+
+
+
+                            }
+
+                            else if(option_1 == 4){
+                              if(posts.get(id).getType() == Type.FLASH){
+                            	if(posts.get(id) instanceof Flash_Post) {
+                                System.out.println("Type the new end date of the post: ");
+                                buff_date_end = in.next();
+                                ((Flash_Post)posts.get(id)).setDateEnd(format.parse(buff_date_end));
+                            	}
+                              }
+
+                              else{
+                                System.out.println("Not a valid option. ");
+                              }
+                            }
+
+                              else{
+                              System.out.println("Not a valid option. ");
+
+                              }
+
 
                             }
                             else{
@@ -329,7 +430,9 @@ public class PostManager {
                             System.out.println("This ID Post doesn't exist.");
                         }
 
-
+                        }catch(ParseException e){
+                            System.out.println("Not a valid format for the date, try with this format: dd-MM-yyyy.");
+                        }
 
                         break;
 
@@ -357,22 +460,55 @@ public class PostManager {
 
                     case 6:
 
+                    	in = new Scanner (System.in);
+                    	System.out.println("How do you want to order the posts?: ");
+                    	System.out.println("1. By Owner. ");
+                    	System.out.println("2. By Date. ");
                         System.out.println("=====================================");
+                        System.out.println("Your option: ");
+
+                    	option = in.nextInt();
+
+                    	if(option == 1) {
+
+
+
+                        System.out.println("==========================================================================");
                         System.out.println("Showing the board for " + log_username);
-                        System.out.println("=====================================");
+                        System.out.println("==========================================================================");
                         System.out.println("General Posts: ");
-                        for(int i = 0; i < posts.size(); i++){
 
-                            if((posts.get(i).getType() == Type.GENERAL) && (posts.get(i).getStatus()== Status.POSTED)){
+                        		int trig = 1;
+                        		ArrayList<Contact> contacts = manager.getContacts();
 
-                                System.out.println(posts.get(i).toString());
+                        		for(int k = 0; k < contacts.size(); k++) {
 
-                            }
+                        			for(int j = 0; j < posts.size(); j++) {
 
-                        }
-                        System.out.println("=====================================");
+                        				if(posts.get(j).getOwner() == contacts.get(k)) {
+                        					if(posts.get(j).getStatus() == Status.POSTED && (posts.get(j).getType() == Type.GENERAL)) {
+                        						if(trig == 1) {
+                        	                        System.out.println("=====================================");
+                        	                        System.out.println(posts.get(j).getOwner().getEmail());
+                        	                        System.out.println("=====================================");
+                        	                        trig = 0;
+                        						}
+
+                        						System.out.println(posts.get(j).toString());
+                        					}
+                        				}
+
+
+                        			}
+
+                        			trig = 1;
+                        		}
+
+
+
+                        System.out.println("==========================================================================");
                         System.out.println("Thematic Posts: ");
-                        System.out.println("=====================================");
+                        System.out.println("==========================================================================");
 
                         int trigger = 0;
 
@@ -385,7 +521,32 @@ public class PostManager {
                                         if((((Thematic_Post) posts.get(i)).getInterests().contains(user.getInterests().get(j))) && (trigger==0)){
 
                                             trigger++;
-                                            System.out.println(posts.get(i).toString());
+                                            trig = 1;
+                                    		contacts = manager.getContacts();
+
+                                    		for(int k = 0; k < contacts.size(); k++) {
+
+                                    			for(int x = 0; x < posts.size(); x++) {
+
+                                    				if(posts.get(x).getOwner() == contacts.get(k)) {
+                                    					if(posts.get(x).getStatus() == Status.POSTED && (posts.get(x).getType() == Type.GENERAL)) {
+                                    						if(trig == 1) {
+                                    	                        System.out.println("=====================================");
+                                    	                        System.out.println(posts.get(x).getOwner().getEmail());
+                                    	                        System.out.println("=====================================");
+                                    	                        trig = 0;
+                                    						}
+
+                                    						System.out.println(posts.get(x).toString());
+                                    					}
+                                    				}
+
+
+                                    			}
+
+                                    			trig = 1;
+                                    		}
+
                                         }
                                     }
 
@@ -394,9 +555,9 @@ public class PostManager {
                             }
                         }
 
-                        System.out.println("=====================================");
+                        System.out.println("==========================================================================");
                         System.out.println("Individualized Posts: ");
-                        System.out.println("=====================================");
+                        System.out.println("==========================================================================");
 
                         for(int i = 0; i < posts.size(); i++){
 
@@ -404,7 +565,32 @@ public class PostManager {
                                 if(posts.get(i) instanceof Individualized_Post) {
                                     if(((Individualized_Post) posts.get(i)).getRecipients().contains(log_username) ){
 
-                                        System.out.println(posts.get(i).toString());
+                                    	trig = 1;
+                                		contacts = manager.getContacts();
+
+                                		for(int k = 0; k < contacts.size(); k++) {
+
+                                			for(int j = 0; j < posts.size(); j++) {
+
+                                				if(posts.get(j).getOwner() == contacts.get(k)) {
+                                					if(posts.get(j).getStatus() == Status.POSTED && (posts.get(j).getType() == Type.GENERAL)) {
+                                						if(trig == 1) {
+                                	                        System.out.println("=====================================");
+                                	                        System.out.println(posts.get(j).getOwner().getEmail());
+                                	                        System.out.println("=====================================");
+                                	                        trig = 0;
+                                						}
+
+                                						System.out.println(posts.get(j).toString());
+                                					}
+                                				}
+
+
+                                			}
+
+                                			trig = 1;
+                                		}
+
 
                                     }
 
@@ -416,22 +602,67 @@ public class PostManager {
 
 
 
-                        System.out.println("=====================================");
+                        System.out.println("==========================================================================");
                         System.out.println("Flash Posts: ");
-                        System.out.println("=====================================");
+                        System.out.println("==========================================================================");
 
                         for(int i = 0; i < posts.size(); i++){
 
                             if((posts.get(i).getType() == Type.FLASH) && (posts.get(i).getStatus()== Status.POSTED) ){
 
 
-                                    System.out.println(posts.get(i).toString());
+                            	trig = 1;
+                        		contacts = manager.getContacts();
+
+                        		for(int k = 0; k < contacts.size(); k++) {
+
+                        			for(int j = 0; j < posts.size(); j++) {
+
+                        				if(posts.get(j).getOwner() == contacts.get(k)) {
+                        					if(posts.get(j).getStatus() == Status.POSTED && (posts.get(j).getType() == Type.GENERAL)) {
+                        						if(trig == 1) {
+                        	                        System.out.println("=====================================");
+                        	                        System.out.println(posts.get(j).getOwner().getEmail());
+                        	                        System.out.println("=====================================");
+                        	                        trig = 0;
+                        						}
+
+                        						System.out.println(posts.get(j).toString());
+                        					}
+                        				}
+
+
+                        			}
+
+                        			trig = 1;
+                        		}
+
 
 
 
                             }
 
                         }
+
+                    }
+
+
+                    	else if(option == 2) {
+
+                      ArrayList <>  aux_array
+                    	Collections.sort(posts);
+
+                    for(int j = 0; j < posts.size(); j++) {
+            					if(posts.get(j).getStatus() == Status.POSTED) {
+
+            					System.out.println(posts.get(j).toString());
+            					   }
+                    	}
+
+
+                    }
+
+
 
 
                     	break;
@@ -447,6 +678,9 @@ public class PostManager {
         System.out.println("User not registered in the contact manager.");
     }
 }
+
+
+
 
 
 /**
@@ -504,6 +738,12 @@ public class PostManager {
 	public void ToPost(int id) {
 
         for(int i = 0; i < posts.size(); i++){
+        	if((posts.get(i).getIdentifier() == id) && (posts.get(i).getStatus() == Status.POSTED)) {
+        		System.out.println("The post has already been posted. ");
+
+        	}
+
+        	else {
             if((posts.get(i).getIdentifier() == id) && (posts.get(i).getStatus() != Status.ARCHIVED)){
 
 
@@ -517,12 +757,14 @@ public class PostManager {
                             posts.get(i).setStatus(Status.WAITING);
                             System.out.println("Your post has been put into a Waiting status.");
 
+
                         }
                         else{
                             Date date = new Date();
                             posts.get(i).setPublication(date);
                             posts.get(i).setStatus(Status.POSTED);
                             System.out.println("Post posted successfully");
+
                         }
 
                     }
@@ -533,8 +775,10 @@ public class PostManager {
                     posts.get(i).setPublication(date);
                     posts.get(i).setStatus(Status.POSTED);
                     System.out.println("Post posted successfully");
+
                 }
-            }
+           	}
+        	}
         }
 
 
@@ -570,6 +814,7 @@ public class PostManager {
 			for(int i = 0; i < posts.size(); i++){
 				if(posts.get(i).getIdentifier() == id){
 					posts.get(i).setStatus(Status.ARCHIVED);
+          System.out.println("Post archived successfully.");
 					return true;
 				}
 			}
