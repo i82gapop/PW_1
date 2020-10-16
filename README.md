@@ -12,6 +12,16 @@ java lo que sea # contact manager program
 java lo que sea # post manager program
 ```
 
+## Files 📦
+
+
+
+## Programs used 🛠️
+
+* [GitDuck](https://gitduck.com/) - An extension for Visual Studio for programing at the same time
+* [VisualStudio](https://code.visualstudio.com/) - IDE used
+* [javadoc](https://javadoc) - Used to create javadoc
+
 
 ## Creators ✒️
 
