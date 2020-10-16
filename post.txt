@@ -1,8 +1,0 @@
-GENERAL|0|General1|General1body|pedropgarciap@gmail.com|18:32/16-10-2020|POSTED
-THEMATIC|1|tematico1bis|tematicobody|pedropgarciap@gmail.com|18:44/16-10-2020|POSTED|[READING, COOKING, GAMING]
-INDIVIDUALIZED|2|individualized|individualizedbody|pedropgarciap@gmail.com|18:45/16-10-2020|POSTED|[pedropgarciap@gmail.com, syntax@]
-FLASH|3|flash|flashbody|syntax@|18:48/16-10-2020|ARCHIVED|18:48/16-10-2020|18:50/16-10-2020
-GENERAL|4|general2|general2b|pedropgarciap@gmail.com|18:51/16-10-2020|POSTED
-GENERAL|5|general3|general3b|pedropgarciap@gmail.com|18:51/16-10-2020|POSTED
-GENERAL|6|general4|general4b|pedropgarciap@gmail.com|18:51/16-10-2020|POSTED
-THEMATIC|7|tematico|tematicob|pedropgarciap@gmail.com|18:59/16-10-2020|POSTED|[READING]

@@ -206,7 +206,7 @@ public abstract class Post implements Comparable<Post>{
     /**
      * Sets the date of publication of a post
      *
-     * @param date Date of publication of the post
+     * @param date date of publication of the post
      * */
 
 
