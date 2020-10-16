@@ -1,14 +1,8 @@
 # PW_1
-A project made by the students Rubén Borrego Canovaca and Pedro Pablo García Pozo for web programation
-
-## Creators
-
-https://github.com/LepreprechauN 
-
-https://github.com/i82gapop
+A project that contains two programs, a contact manager and a post manager, both implemented between them by differents executables.
 
 
-## Usage
+## Usage 🔧
 
 ```python
 In terminal:
@@ -19,6 +13,12 @@ java lo que sea # post manager program
 ```
 
 
+## Creators ✒️
 
-## License
+https://github.com/LepreprechauN 
+
+https://github.com/i82gapop
+
+
+## License 📄
 [MIT](https://choosealicense.com/licenses/mit/)
