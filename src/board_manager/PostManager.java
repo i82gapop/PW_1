@@ -867,7 +867,7 @@ public class PostManager {
    * Function that updates a post of the posts list.
    *
    * @param new_post Post with the new information to add
-   * @param old_contact Post in the list to update
+   * @param old_postt in the list to update
    *
    **/
 
