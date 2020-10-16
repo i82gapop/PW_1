@@ -1,5 +1,5 @@
 # PW_1
-A project that contains two programs, a contact manager and a post manager, both implemented between them by differents executables.
+A project that contains two programs, a contact manager and a post manager, both implemented between them by different executables.
 
 
 ## Usage 🔧
