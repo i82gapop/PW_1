@@ -66,7 +66,7 @@ public class Flash_Post extends Post{
 
     public String getDateString(){
 
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm/dd-MM-yyyy");
 		return format.format(date_start) + "|" + format.format(date_end);
     }
 
@@ -102,12 +102,12 @@ public class Flash_Post extends Post{
 
         if(date_end!=null | date_start!=null){
 
-            return "Post {ID: " + identifier + "; Title: " + title + "; Body: " + body + "; Owner: " + owner.getFullname() + "; Publication: " + publication + "; Starting Date: " + date_start + "; Expiration Date: " + date_end + "}";
+            return "Post {ID: " + identifier + "; Title: " + title + "; Body: " + body + "; Owner: " + owner.getEmail() + "; Publication: " + publication + "; Starting Date: " + date_start + "; Expiration Date: " + date_end + "}";
         }
 
         else{
 
-            return "Post {ID: " + identifier + "; Title: " + title + "; Body: " + body + "; Owner: " + owner.getFullname() + "; Publication: " + publication + "}";
+            return "Post {ID: " + identifier + "; Title: " + title + "; Body: " + body + "; Owner: " + owner.getEmail() + "; Publication: " + publication + "}";
         }
     }
 

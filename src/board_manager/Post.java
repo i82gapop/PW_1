@@ -141,7 +141,7 @@ public abstract class Post implements Comparable<Post>{
      * */
     public String getPublicationString(){
 
-        SimpleDateFormat date_format = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat date_format = new SimpleDateFormat("HH:mm/dd-MM-yyyy");
 
         if(publication!=null){
 
@@ -154,7 +154,20 @@ public abstract class Post implements Comparable<Post>{
         }
     }
 
-    
+    public String getPublicationStringNoHour(){
+
+        SimpleDateFormat date_format = new SimpleDateFormat("dd-MM-yyyy");
+
+        if(publication!=null){
+
+        	return date_format.format(publication);
+        }
+
+        else{
+
+        	return null;
+        }
+    }
     
 
     /**
@@ -225,7 +238,7 @@ public abstract class Post implements Comparable<Post>{
   	 * */
     public String toString(){
 
-        return "Post {ID: " + identifier + "; Title: " + title + "; Body: " + body + "; Owner: " + owner.getFullname() + "; Publication: " + publication + "}";
+        return "Post {ID: " + identifier + "; Title: " + title + "; Body: " + body + "; Owner: " + owner.getEmail() + "; Publication: " + publication + "}";
     }
 
     public String toStringFile(){

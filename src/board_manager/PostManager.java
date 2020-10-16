@@ -30,7 +30,7 @@ public class PostManager {
 
     private static PostManager instance = null;
 
-	SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+	SimpleDateFormat format = new SimpleDateFormat("HH:mm/dd-MM-yyyy");
 	private Scanner in = new Scanner (System.in);
     private ArrayList <Post> posts;
     private ArrayList <String> interests;
@@ -114,10 +114,12 @@ public class PostManager {
                         break;
 
                     case 1:
+                        
                         try{
 
                         Post_Creator_Board aux_post_creator = new Post_Creator_Board();
                         Post aux_post;
+                        
 
                     	int opt;
                     	in = new Scanner (System.in);
@@ -132,8 +134,14 @@ public class PostManager {
                         opt = in.nextInt();
 
                         switch(opt) {
+                            
+                            case 0:
+                                
+                                System.out.println("Cancelled");
+                                break;
 
                             case 1:
+                            
                                 in = new Scanner (System.in);
                                 System.out.println("Type the title of the post: ");
                                 buff_title = in.nextLine();
@@ -227,52 +235,51 @@ public class PostManager {
                                 buff_title = in.nextLine();
                                 System.out.println("Type the body of the post: ");
                                 buff_body = in.nextLine();
-                                System.out.println("When do you want to post it?: (format: dd-MM-yyyy)");
+                                System.out.println("When do you want to post it?: (format: HH:mm/dd-MM-yyyy)");
                                 buff_date_pub = in.next();
-                                System.out.println("When do you want to remove it?: (format: dd-MM-yyyy)");
+                                System.out.println("When do you want to remove it?: (format: HH:mm/dd-MM-yyyy)");
                                 buff_date_end = in.next();
 
 
                                 aux_post = aux_post_creator.getPost(Type.FLASH, posts.size(), buff_title, buff_body, user, null, null, format.parse(buff_date_pub), format.parse(buff_date_end));
                                 aux_post.setType(Type.FLASH);
 
-
                                 AddPost(aux_post);
 
                                 break;
+
+                            default:
+
+                                System.out.println("Not a valid option. ");
+                                break;
+                        
                         }
-
-
-
-                            }catch(ParseException e){
-                                System.out.println("Not a valid format for the date, try with this format: dd-MM-yyyy.");
-                            }
-
+                        }catch(ParseException e){
+                            System.out.println("Not a valid format for the date, try with this format: HH:mm/dd-MM-yyyy.");
+                        }
+                                      
                         break;
 
                     case 2:
+                        
                         in = new Scanner (System.in);
                         System.out.println("Type the id of the post to post: ");
                         id = in.nextInt();
 
                         if(checkExistence(id)) {
 
+                            if(posts.get(id).getOwner() == user){
+                                ToPost(id);
+                            }
 
-                         if(posts.get(id).getOwner() == user){
-                        ToPost(id);
+                            else{
+                                System.out.println("You are not the owner of this post. ");
+                            }
                         }
-                        else{
-                            System.out.println("You are not the owner of this post. ");
-                        }
-
-                       }
 
                         else {
                         	System.out.println("That ID post doesn't exist. ");
                         }
-
-
-
 
                         break;
 
@@ -360,6 +367,8 @@ public class PostManager {
                               else if(posts.get(id).getType() == Type.INDIVIDUALIZED){
                             	  if(posts.get(id) instanceof Individualized_Post) {
                                 System.out.println("Type the new recipients of the post: ");
+                                
+                                in = new Scanner (System.in);
                                 buff_recipients = in.nextLine();
 
                                 without_spaces = buff_recipients.replace(" ", "");
@@ -431,7 +440,7 @@ public class PostManager {
                         }
 
                         }catch(ParseException e){
-                            System.out.println("Not a valid format for the date, try with this format: dd-MM-yyyy.");
+                            System.out.println("Not a valid format for the date, try with this format: HH:mm/dd-MM-yyyy.");
                         }
 
                         break;
@@ -442,14 +451,20 @@ public class PostManager {
                         System.out.println("What post do you want to remove?: (type the id)");
                         id = in.nextInt();
 
-                        if(posts.get(id).getOwner() == user){
-                        RemovePost(id);
+                        if(posts.size() != 0){
+
+                            if(posts.get(id).getOwner() == user){
+                                RemovePost(id);
+                            }
+                            else{
+                                System.out.println("You are not the owner of this post. ");
+                            }
                         }
+
                         else{
-                            System.out.println("You are not the owner of this post. ");
+
+                            System.out.println("There are no posts to remove.");
                         }
-
-
 
                         break;
 
@@ -498,7 +513,6 @@ public class PostManager {
                         					}
                         				}
 
-
                         			}
 
                         			trig = 1;
@@ -529,7 +543,7 @@ public class PostManager {
                                     			for(int x = 0; x < posts.size(); x++) {
 
                                     				if(posts.get(x).getOwner() == contacts.get(k)) {
-                                    					if(posts.get(x).getStatus() == Status.POSTED && (posts.get(x).getType() == Type.GENERAL)) {
+                                    					if(posts.get(x).getStatus() == Status.POSTED && (posts.get(x).getType() == Type.THEMATIC)) {
                                     						if(trig == 1) {
                                     	                        System.out.println("=====================================");
                                     	                        System.out.println(posts.get(x).getOwner().getEmail());
@@ -573,7 +587,7 @@ public class PostManager {
                                 			for(int j = 0; j < posts.size(); j++) {
 
                                 				if(posts.get(j).getOwner() == contacts.get(k)) {
-                                					if(posts.get(j).getStatus() == Status.POSTED && (posts.get(j).getType() == Type.GENERAL)) {
+                                					if(posts.get(j).getStatus() == Status.POSTED && (posts.get(j).getType() == Type.INDIVIDUALIZED)) {
                                 						if(trig == 1) {
                                 	                        System.out.println("=====================================");
                                 	                        System.out.println(posts.get(j).getOwner().getEmail());
@@ -619,7 +633,7 @@ public class PostManager {
                         			for(int j = 0; j < posts.size(); j++) {
 
                         				if(posts.get(j).getOwner() == contacts.get(k)) {
-                        					if(posts.get(j).getStatus() == Status.POSTED && (posts.get(j).getType() == Type.GENERAL)) {
+                        					if(posts.get(j).getStatus() == Status.POSTED && (posts.get(j).getType() == Type.FLASH)) {
                         						if(trig == 1) {
                         	                        System.out.println("=====================================");
                         	                        System.out.println(posts.get(j).getOwner().getEmail());
@@ -630,58 +644,125 @@ public class PostManager {
                         						System.out.println(posts.get(j).toString());
                         					}
                         				}
-
-
                         			}
 
                         			trig = 1;
                         		}
+                            }
+                        }
+                    }
 
 
+                    else if(option == 2) {
 
+                            ArrayList <Post> aux_array = new ArrayList<>();
 
+                              for(int i = 0; i < posts.size(); i++){
+                                if(posts.get(i).getStatus() == Status.POSTED){
+                                    aux_array.add(posts.get(i));
+
+                                }
                             }
 
+                              Collections.sort(aux_array);
+
+                        System.out.println("==========================================================================");
+                        System.out.println("Showing the board for " + log_username);
+                        System.out.println("==========================================================================");
+                        System.out.println("General Posts: ");
+
+
+                                
+
+                        			for(int j = 0; j < aux_array.size(); j++) {
+
+                        					if(aux_array.get(j).getType() == Type.GENERAL) {
+
+                        						System.out.println(aux_array.get(j).toString());
+                        					}
+                                    }
+
+
+                        System.out.println("==========================================================================");
+                        System.out.println("Thematic Posts: ");
+                        System.out.println("==========================================================================");
+
+                        int trigger = 0;
+
+                        for(int i = 0; i < aux_array.size(); i++){
+                            if(posts.get(i).getType() == Type.THEMATIC){
+                                if(posts.get(i) instanceof Thematic_Post) {
+
+                                	for(int j = 0; j < user.getInterests().size(); j++) {
+
+                                        if((((Thematic_Post) aux_array.get(i)).getInterests().contains(user.getInterests().get(j))) && (trigger==0)){
+
+                                            trigger++;
+                                    		System.out.println(aux_array.get(i).toString());
+                                    	}
+                                    }
+                                }
+                            }
+
+                            trigger = 0;
+                        }
+       
+
+                        System.out.println("==========================================================================");
+                        System.out.println("Individualized Posts: ");
+                        System.out.println("==========================================================================");
+
+                        for(int i = 0; i < aux_array.size(); i++){
+
+                            if((aux_array.get(i).getType()) == Type.INDIVIDUALIZED){
+                                if(posts.get(i) instanceof Individualized_Post) {
+                                    if(((Individualized_Post) posts.get(i)).getRecipients().contains(log_username)){
+                                
+                                		System.out.println(aux_array.get(i).toString());
+                                    }
+
+                                }
+
+                            }
+                        }
+
+
+
+
+                        System.out.println("==========================================================================");
+                        System.out.println("Flash Posts: ");
+                        System.out.println("==========================================================================");
+
+
+                        for(int j = 0; j < aux_array.size(); j++) {
+                            if(aux_array.get(j).getType() == Type.FLASH){
+
+                            System.out.println(aux_array.get(j).toString());
+                            }
                         }
 
                     }
 
+                    else{
 
-                    	else if(option == 2) {
-
-                      ArrayList <>  aux_array
-                    	Collections.sort(posts);
-
-                    for(int j = 0; j < posts.size(); j++) {
-            					if(posts.get(j).getStatus() == Status.POSTED) {
-
-            					System.out.println(posts.get(j).toString());
-            					   }
-                    	}
-
-
+                        System.out.println("Not a valid option. Try again.[1-2]");
                     }
 
-
-
-
-                    	break;
+                    break;
 
                     default:
                     System.out.println("Not a valid option. Try again.");
+                    break;
+                    
+                }      
             }
-
         }
-
-    }
-    else{
-        System.out.println("User not registered in the contact manager.");
+    
+        else{
+            
+            System.out.println("User not registered in the contact manager.");
     }
 }
-
-
-
-
 
 /**
 * Function that check the existence of a post with a given id
@@ -706,7 +787,6 @@ public class PostManager {
 
         return false;
 	}
-
 
   /**
    * Function that adds a given post to the posts list.
@@ -744,44 +824,42 @@ public class PostManager {
         	}
 
         	else {
-            if((posts.get(i).getIdentifier() == id) && (posts.get(i).getStatus() != Status.ARCHIVED)){
+                if((posts.get(i).getIdentifier() == id) && (posts.get(i).getStatus() != Status.ARCHIVED)){
 
 
-                if(posts.get(i).getType() == Type.FLASH){
-                    if(posts.get(i) instanceof Flash_Post) {
-                        Date aux_date = new Date();
+                    if(posts.get(i).getType() == Type.FLASH){
+                        if(posts.get(i) instanceof Flash_Post) {
+                            Date aux_date = new Date();
 
-                        if((aux_date.compareTo(((Flash_Post) posts.get(i)).getDateStart()))<0){
+                            if((aux_date.compareTo(((Flash_Post) posts.get(i)).getDateStart()))<0){
 
-                            posts.get(i).setPublication(((Flash_Post) posts.get(i)).getDateStart());
-                            posts.get(i).setStatus(Status.WAITING);
-                            System.out.println("Your post has been put into a Waiting status.");
+                                posts.get(i).setPublication(((Flash_Post) posts.get(i)).getDateStart());
+                                posts.get(i).setStatus(Status.WAITING);
+                                System.out.println("Your post has been put into a Waiting status.");
 
+
+                            }
+                            else{
+                                Date date = new Date();
+                                posts.get(i).setPublication(date);
+                                posts.get(i).setStatus(Status.POSTED);
+                                System.out.println("Post posted successfully");
+
+                            }
 
                         }
-                        else{
-                            Date date = new Date();
-                            posts.get(i).setPublication(date);
-                            posts.get(i).setStatus(Status.POSTED);
-                            System.out.println("Post posted successfully");
+                    }
 
-                        }
+                    else{
+                        Date date = new Date();
+                        posts.get(i).setPublication(date);
+                        posts.get(i).setStatus(Status.POSTED);
+                        System.out.println("Post posted successfully");
 
                     }
                 }
-
-                else{
-                    Date date = new Date();
-                    posts.get(i).setPublication(date);
-                    posts.get(i).setStatus(Status.POSTED);
-                    System.out.println("Post posted successfully");
-
-                }
-           	}
         	}
         }
-
-
 	}
 
 
@@ -798,7 +876,6 @@ public class PostManager {
 		posts.set(index, new_post);
 
 	}
-
 
   /**
    * Function that archive a post from a given id from the list.
@@ -826,7 +903,6 @@ public class PostManager {
 
 	}
 
-
   /**
    * A visual menu to see Search options
    * @throws ParseException if the format of the dates aren't allowed
@@ -852,13 +928,10 @@ public class PostManager {
         System.out.println("Your option: ");
         option = in.nextInt();
 
-
-
-
             if(option == 1){
 
 
-                System.out.println("Type the date of the posts to search: ");
+                System.out.println("Type the date of the posts to search: (dd-MM-yyyy)");
                 search_term = in.next();
 
 
@@ -944,16 +1017,16 @@ public class PostManager {
                 }
             }
 
-            else{
+            else if(option == 0){
 
-                System.out.println("Wrong option. Try using a valid option (between 0-4)");
-                option = in.nextInt();
+                System.out.println("Exiting the menu");
             }
 
+            else{
+
+                System.out.println("Wrong option. Try using a valid option next time (between 0-4).");
+            }
     }
-
-
-
 
     /**
      * A function that searches for a list of posts with the publication date given
@@ -967,11 +1040,9 @@ public class PostManager {
 
     	ArrayList<Post> contacts = new ArrayList<Post>();
 
-
     	for(int i = 0; i < posts.size(); i++) {
-    			if((posts.get(i)).getPublication() == format.parse(date)) {
+    			if((posts.get(i)).getPublicationStringNoHour().equals(date)) {
     				contacts.add(posts.get(i));
-
     			}
     		}
 
@@ -984,10 +1055,7 @@ public class PostManager {
 
             return null;
         }
-
-
     }
-
 
     /**
      * A function that searches for the posts with the interests given
@@ -996,9 +1064,7 @@ public class PostManager {
      * @return A list with all the posts with the same interests as given
      * */
 
-
     public ArrayList <Post> SearchPostByInterest(String interests) {
-
 
     	ArrayList<Post> contacts = new ArrayList<Post>();
 
@@ -1025,8 +1091,6 @@ public class PostManager {
 
     }
 
-
-
   /**
  * A function that searches for the posts with the owner given
  *
@@ -1044,7 +1108,6 @@ public class PostManager {
     		}
     	}
 
-
         if(contacts.size() != 0){
 
             return contacts;
@@ -1054,9 +1117,7 @@ public class PostManager {
 
             return null;
         }
-
     }
-
 
     /**
    * A function that searches for the posts with the recipient given
@@ -1064,7 +1125,6 @@ public class PostManager {
    * @param contact Recipient of the posts to search for
    * @return A list with all the posts with the same recipient as given
    * */
-
 
     public ArrayList <Post> SearchPostByRecipient(String contact){
     	ArrayList<Post> contacts = new ArrayList<Post>();
@@ -1158,7 +1218,7 @@ public class PostManager {
             String line;
             String [] array = new String[9];
 
-            SimpleDateFormat aux_date = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat aux_date = new SimpleDateFormat("HH:mm/dd-MM-yyyy");
             StringTokenizer token;
 
             while((line = br.readLine()) != null){

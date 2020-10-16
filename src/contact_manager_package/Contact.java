@@ -26,7 +26,6 @@ public class Contact {
 	private String surname;
 	private Date birthday;
 	private String email;
-	//private ArrayList <Interest> interests = new ArrayList <Interest>();
 	ArrayList <String> interests = new ArrayList <String>();
 
 	/**

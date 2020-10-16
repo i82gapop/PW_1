@@ -49,6 +49,15 @@ public class Manager {
     }
 
 
+
+    public ArrayList <Contact> getContacts(){
+    	
+    	
+    	return contacts;
+    	
+    }
+
+
 /**
  * A visual menu of the sytem
  * @throws ParseException if the format of the dates aren't allowed
@@ -155,71 +164,91 @@ public class Manager {
                     break;
 
                 case 3:
-                try{
 
-                    in = new Scanner (System.in);
-                        System.out.println("Type the email of the contact to update below: ");
-                    buff_email = in.next();
+                if(contacts.size() == 0){
 
-                    in = new Scanner (System.in);
-
-                        System.out.println("Lets add the new information of the contact.");
-                        System.out.println("Type the new name of the contact below:");
-                    buff_name = in.nextLine();
-
-                        System.out.println("Type the new surname of the contact below:");
-                    buff_surname = in.nextLine();
-
-                        System.out.println("Type the new Birthday of the contact below: (format: dd-MM-yyyy)");
-                    buff_birth = in.next();
-
-                    aux_contact = new Contact(buff_name, buff_surname, format.parse(buff_birth), buff_email);
-
-                    System.out.println("What new interests does your contact have from the following: " + interests);
-
-                    in = new Scanner (System.in);
-
-                    String buff_interest_ = in.nextLine();
-                    String without_spaces_ = buff_interest_.replace(" ", "");
-                    StringTokenizer token_interest_ = new StringTokenizer(without_spaces_, ",");
-                    ArrayList <String> token_interests_ = new ArrayList <String>();
-
-
-                    while(token_interest_.hasMoreTokens()){
-
-                        token_interests_.add(token_interest_.nextToken().toUpperCase());
-                    }
-
-                    for(int i = 0; i < token_interests_.size(); i++){
-
-                        if(interests.contains(token_interests_.get(i))){
-
-                            aux_contact.addInterest(token_interests_.get(i));
-                        }
-                    }
-
-                    UpdateContact(aux_contact, SearchContactByEmail(buff_email));
-
-                    }catch(ParseException e){
-                            System.out.println("Not a valid format for the date, try with this format: dd/MM/yyyy.");
-                            }
-
+                    System.out.println("No contacts to update.");
                     break;
+                }
 
+                else{
+
+                    try{
+
+                        in = new Scanner (System.in);
+                            System.out.println("Type the email of the contact to update below: ");
+                        buff_email = in.next();
+    
+                        in = new Scanner (System.in);
+    
+                            System.out.println("Lets add the new information of the contact.");
+                            System.out.println("Type the new name of the contact below:");
+                        buff_name = in.nextLine();
+    
+                            System.out.println("Type the new surname of the contact below:");
+                        buff_surname = in.nextLine();
+    
+                            System.out.println("Type the new Birthday of the contact below: (format: dd-MM-yyyy)");
+                        buff_birth = in.next();
+    
+                        aux_contact = new Contact(buff_name, buff_surname, format.parse(buff_birth), buff_email);
+    
+                        System.out.println("What new interests does your contact have from the following: " + interests);
+    
+                        in = new Scanner (System.in);
+    
+                        String buff_interest_ = in.nextLine();
+                        String without_spaces_ = buff_interest_.replace(" ", "");
+                        StringTokenizer token_interest_ = new StringTokenizer(without_spaces_, ",");
+                        ArrayList <String> token_interests_ = new ArrayList <String>();
+    
+    
+                        while(token_interest_.hasMoreTokens()){
+    
+                            token_interests_.add(token_interest_.nextToken().toUpperCase());
+                        }
+    
+                        for(int i = 0; i < token_interests_.size(); i++){
+    
+                            if(interests.contains(token_interests_.get(i))){
+    
+                                aux_contact.addInterest(token_interests_.get(i));
+                            }
+                        }
+    
+                        UpdateContact(aux_contact, SearchContactByEmail(buff_email));
+    
+                        }catch(ParseException e){
+                                System.out.println("Not a valid format for the date, try with this format: dd/MM/yyyy.");
+                                }
+    
+                        break;
+                }
 
                 case 4:
 
                     ConsultContact();
                     break;
                 case 5:
-                	System.out.println("Showing all contacts of the contact manager");
-                    for(int i = 0; i < contacts.size(); i++){
+                    
+                    if(contacts.size() != 0){
 
-                        System.out.println(contacts.get(i));
+                        System.out.println("Showing all contacts of the contact manager");
+                        
+                        for(int i = 0; i < contacts.size(); i++){
+    
+                            System.out.println(contacts.get(i));
+                        }
                     }
+
+                    else{
+
+                        System.out.println("There are no contacts in the database");
+                    }
+
                 	break;
                 default:
-                    System.out.println("Not a valid option. Try again.");
+                    System.out.println("Not a valid option. Try again. [0-5]");
             }
 
         }
@@ -267,17 +296,14 @@ public class Manager {
 
 
                     contacts.remove(i);
-                    System.out.println("Contact removed succesfully");
+                    System.out.println("Contact removed succesfully.");
                     return true;
                 }
             }
         }
 
-
-            System.out.println("The contact doesn't exist.");
-            return false;
-
-
+        System.out.println("The contact doesn't exist.");
+        return false;
     }
 
 
@@ -347,7 +373,6 @@ public class Manager {
                 System.out.println("Type the full name of the contact to search: ");
 
                 in = new Scanner (System.in);
-                //in.flush();
 
                 search_term = in.nextLine();
 
