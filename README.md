@@ -4,7 +4,7 @@ A project made by the students Rubén Borrego Canovaca and Pedro Pablo García P
 
 ## Usage
 
-```In terminal
+```java
 Use the following commands to execute the two programs
 
 java lo que sea # contact manager program
