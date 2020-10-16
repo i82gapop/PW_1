@@ -6,7 +6,7 @@ A project that contains two programs, a contact manager and a post manager, both
 
 ```python
 In terminal:
-Use the following commands to execute the two programs
+Use the following commands to execute the two programs:
 
 java lo que sea # contact manager program
 java lo que sea # post manager program
